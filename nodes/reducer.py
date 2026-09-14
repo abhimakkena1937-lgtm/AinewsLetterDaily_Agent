@@ -1,14 +1,21 @@
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+
 from utils.gemini_limiter import gemini_semaphore
 from config import GEMINI_MODEL
+
 from prompts import (
     REDUCER_SYSTEM_PROMPT,
     REDUCER_USER_PROMPT,
 )
+
 from schemas import RankedContext
 from state import NewsLetterState
 
+
+# =========================================================
+# Gemini model
+# =========================================================
 
 def get_reducer_llm():
 
@@ -20,49 +27,85 @@ def get_reducer_llm():
     )
 
 
+# =========================================================
+# Reducer Agent
+# =========================================================
+
 async def reducer_node(
     state: NewsLetterState,
 ) -> dict:
 
-    news = state.get("news", [])
-    startups = state.get("startups", [])
-    tweets = state.get("tweets", [])
-    github_repos = state.get("github_repos", [])
-    papers = state.get("research_papers", [])
+    news = state.get(
+        "news",
+        []
+    )
+
+    startups = state.get(
+        "startups",
+        []
+    )
+
+    tweets = state.get(
+        "tweets",
+        []
+    )
+
+    github_repos = state.get(
+        "github_repos",
+        []
+    )
+
+    papers = state.get(
+        "research_papers",
+        []
+    )
+
+    # -----------------------------------------------------
+    # Start
+    # -----------------------------------------------------
 
     print("\n" + "=" * 80)
     print("RUNNING REDUCER")
     print("=" * 80)
 
-    print("NEWS:", len(news))
-    print("STARTUPS:", len(startups))
-    print("TWEETS:", len(tweets))
-    print("GITHUB REPOS:", len(github_repos))
-    print("PAPERS:", len(papers))
+    print(
+        "NEWS:",
+        len(news)
+    )
 
-    # ---------------------------------------------------------
-    # Limit data sent to Gemini
-    # ---------------------------------------------------------
+    print(
+        "STARTUPS:",
+        len(startups)
+    )
 
-    news = news[:10]
-    startups = startups[:10]
-    tweets = tweets[:10]
-    github_repos = github_repos[:10]
-    papers = papers[:10]
+    print(
+        "TWEETS:",
+        len(tweets)
+    )
 
-    print("\n" + "=" * 80)
-    print("DATA SENT TO GEMINI")
-    print("=" * 80)
+    print(
+        "GITHUB REPOS:",
+        len(github_repos)
+    )
 
-    print("NEWS:", len(news))
-    print("STARTUPS:", len(startups))
-    print("TWEETS:", len(tweets))
-    print("GITHUB REPOS:", len(github_repos))
-    print("PAPERS:", len(papers))
+    print(
+        "PAPERS:",
+        len(papers)
+    )
 
-    # ---------------------------------------------------------
-    # Prepare research data
-    # ---------------------------------------------------------
+    # -----------------------------------------------------
+    # IMPORTANT
+    #
+    # Do NOT arbitrarily slice the research.
+    #
+    # The News Agent has already:
+    # - searched each category
+    # - removed duplicate URLs
+    # - removed duplicate titles
+    # - extracted structured items
+    #
+    # The Reducer should see the complete research dataset.
+    # -----------------------------------------------------
 
     research_data = {
         "news": news,
@@ -72,12 +115,47 @@ async def reducer_node(
         "papers": papers,
     }
 
-    # ---------------------------------------------------------
+    # -----------------------------------------------------
+    # Data sent to Gemini
+    # -----------------------------------------------------
+
+    print("\n" + "=" * 80)
+    print("DATA SENT TO REDUCER GEMINI")
+    print("=" * 80)
+
+    print(
+        "NEWS:",
+        len(news)
+    )
+
+    print(
+        "STARTUPS:",
+        len(startups)
+    )
+
+    print(
+        "TWEETS:",
+        len(tweets)
+    )
+
+    print(
+        "GITHUB REPOS:",
+        len(github_repos)
+    )
+
+    print(
+        "PAPERS:",
+        len(papers)
+    )
+
+    # -----------------------------------------------------
     # Gemini
-    # ---------------------------------------------------------
+    # -----------------------------------------------------
 
     llm = get_reducer_llm()
+
     async with gemini_semaphore:
+
         response = await llm.ainvoke(
             [
                 SystemMessage(
@@ -94,9 +172,9 @@ async def reducer_node(
 
     ranked_context = response
 
-    # ---------------------------------------------------------
+    # -----------------------------------------------------
     # Debug output
-    # ---------------------------------------------------------
+    # -----------------------------------------------------
 
     print("\n" + "=" * 80)
     print("REDUCED CONTEXT")
@@ -104,27 +182,37 @@ async def reducer_node(
 
     print(
         "TOP NEWS:",
-        len(ranked_context.top_news)
+        len(
+            ranked_context.top_news
+        )
     )
 
     print(
         "TOP STARTUPS:",
-        len(ranked_context.top_start_ups)
+        len(
+            ranked_context.top_start_ups
+        )
     )
 
     print(
         "TOP TWEETS:",
-        len(ranked_context.top_tweets)
+        len(
+            ranked_context.top_tweets
+        )
     )
 
     print(
         "TOP GITHUB:",
-        len(ranked_context.top_github_repos)
+        len(
+            ranked_context.top_github_repos
+        )
     )
 
     print(
         "TOP PAPERS:",
-        len(ranked_context.top_papers)
+        len(
+            ranked_context.top_papers
+        )
     )
 
     print(
@@ -132,9 +220,16 @@ async def reducer_node(
         ranked_context.tool_of_the_day
     )
 
+    # -----------------------------------------------------
+    # Return
+    # -----------------------------------------------------
+
     return {
+
         "ranked_context": ranked_context,
+
         "progress": [
-            "reducer: ranked and selected newsletter content"
+            "reducer: ranked and curated "
+            "complete research dataset"
         ],
     }
