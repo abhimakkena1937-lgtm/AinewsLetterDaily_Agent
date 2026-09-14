@@ -32,7 +32,7 @@ class StartUpItem(BaseModel):
     investors:List[str]=Field(default_factory=list)
     source:str |None=None
     url:HttpUrl |None=None
-    evidence_id:int
+    evidence_id:int |None=None
     image_url: str | None = None
 
 class FreshnessCheck(BaseModel):
@@ -109,6 +109,39 @@ class RankedContext(BaseModel):
     top_github_repos:List[GitHubItem]=Field(default_factory=list)
     top_papers:List[PaperItem]=Field(default_factory=list)
     tool_of_the_day: ToolOfTheDay | None = None
+
+
+class AllResearchItems(BaseModel):
+    news: list[NewsItem] = Field(
+        default_factory=list
+    )
+
+    startups: list[StartUpItem] = Field(
+        default_factory=list
+    )
+
+    tweets: list[TweetItem] = Field(
+        default_factory=list
+    )
+
+    repositories: list[GitHubItem] = Field(
+        default_factory=list
+    )
+
+    papers: list[PaperItem] = Field(
+        default_factory=list
+    )
+
+class ImageAssignment(BaseModel):
+    category: str
+    item_title: str
+    image_url: str | None = None
+
+
+class ImageAssignments(BaseModel):
+    assignments: list[ImageAssignment] = Field(
+        default_factory=list
+    )
 
 
 
