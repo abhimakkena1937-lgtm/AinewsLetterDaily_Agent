@@ -1,47 +1,94 @@
-- name: Publish newsletter to Render
-  env:
-    RENDER_NEWSLETTER_URL: https://ainewsletterdaily-agent.onrender.com/api/publish-newsletter
-    NEWSLETTER_PUBLISH_KEY: ${{ secrets.NEWSLETTER_PUBLISH_KEY }}
+name: AI Daily Newsletter
 
-  run: |
-    python - <<'PY'
-    import json
-    import os
-    from pathlib import Path
-    import requests
+on:
+  schedule:
+    - cron: "30 16 * * *"
 
-    newsletter_file = Path("output/newsletter.json")
+  workflow_dispatch:
 
-    if not newsletter_file.exists():
-        raise FileNotFoundError(
-            "output/newsletter.json was not created."
-        )
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
 
-    data = json.loads(
-        newsletter_file.read_text(encoding="utf-8")
-    )
+    steps:
 
-    publish_key = os.environ.get("NEWSLETTER_PUBLISH_KEY")
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    if not publish_key:
-        raise RuntimeError(
-            "NEWSLETTER_PUBLISH_KEY GitHub secret is missing."
-        )
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
 
-    response = requests.post(
-        os.environ["RENDER_NEWSLETTER_URL"],
-        headers={
-            "Content-Type": "application/json",
-            "X-Newsletter-Key": publish_key,
-        },
-        json={"data": data},
-        timeout=60,
-    )
+      - name: Set up Python
+        run: uv python install 3.13
 
-    print("Render status:", response.status_code)
-    print("Render response:", response.text)
+      - name: Install dependencies
+        run: uv sync
 
-    response.raise_for_status()
+      - name: Run newsletter
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          GOOGLE_APPS_SCRIPT_URL: ${{ secrets.GOOGLE_APPS_SCRIPT_URL }}
 
-    print("Newsletter successfully published to Render.")
-    PY
+        run: uv run python daily_runner.py
+
+      - name: Publish newsletter to Render
+        env:
+          RENDER_NEWSLETTER_URL: https://ainewsletterdaily-agent.onrender.com/api/publish-newsletter
+          NEWSLETTER_PUBLISH_KEY: ${{ secrets.NEWSLETTER_PUBLISH_KEY }}
+
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import requests
+
+          newsletter_file = Path("output/newsletter.json")
+
+          if not newsletter_file.exists():
+              raise FileNotFoundError(
+                  "output/newsletter.json was not created."
+              )
+
+          data = json.loads(
+              newsletter_file.read_text(encoding="utf-8")
+          )
+
+          if not isinstance(data, dict):
+              raise ValueError(
+                  "newsletter.json must contain a JSON object."
+              )
+
+          publish_key = os.environ.get(
+              "NEWSLETTER_PUBLISH_KEY"
+          )
+
+          if not publish_key:
+              raise RuntimeError(
+                  "NEWSLETTER_PUBLISH_KEY GitHub secret is missing."
+              )
+
+          response = requests.post(
+              os.environ["RENDER_NEWSLETTER_URL"],
+              headers={
+                  "Content-Type": "application/json",
+                  "X-Newsletter-Key": publish_key,
+              },
+              json={
+                  "data": data
+              },
+              timeout=60,
+          )
+
+          print("Render status:", response.status_code)
+          print("Render response:", response.text)
+
+          response.raise_for_status()
+
+          print(
+              "Newsletter successfully published to Render."
+          )
+          PY
