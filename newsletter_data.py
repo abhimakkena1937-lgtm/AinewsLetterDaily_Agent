@@ -1,12 +1,35 @@
 import json
-from pathlib import Path
+import os
+
+import psycopg
+from dotenv import load_dotenv
 
 
 # =====================================================
-# NEWSLETTER DATA FILE
+# LOAD ENVIRONMENT VARIABLES
 # =====================================================
 
-DATA_FILE = Path("output/newsletter.json")
+load_dotenv()
+
+
+# =====================================================
+# DATABASE
+# =====================================================
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+
+def get_connection():
+
+    if not DATABASE_URL:
+
+        raise RuntimeError(
+            "DATABASE_URL is not configured."
+        )
+
+    return psycopg.connect(
+        DATABASE_URL
+    )
 
 
 # =====================================================
@@ -30,70 +53,131 @@ def get_default_newsletter_data():
 
 
 # =====================================================
-# LOAD NEWSLETTER
+# SAVE NEWSLETTER
+# =====================================================
+
+def save_newsletter_data(
+    data: dict
+):
+
+    if not isinstance(
+        data,
+        dict
+    ):
+
+        raise ValueError(
+            "Newsletter data must be a JSON object."
+        )
+
+    try:
+
+        with get_connection() as conn:
+
+            with conn.cursor() as cur:
+
+                cur.execute(
+                    """
+                    INSERT INTO newsletters (data)
+                    VALUES (%s)
+                    """,
+                    (
+                        json.dumps(
+                            data,
+                            ensure_ascii=False
+                        ),
+                    ),
+                )
+
+            conn.commit()
+
+    except Exception as error:
+
+        print(
+            f"Failed to save newsletter data: {error}"
+        )
+
+        raise
+
+
+# =====================================================
+# LOAD LATEST NEWSLETTER
 # =====================================================
 
 def load_newsletter_data():
 
-    # -------------------------------------------------
-    # File does not exist
-    # -------------------------------------------------
-
-    if not DATA_FILE.exists():
-
-        print(
-            "Newsletter data file does not exist."
-        )
-
-        return get_default_newsletter_data()
-
-    # -------------------------------------------------
-    # Read existing newsletter
-    # -------------------------------------------------
-
     try:
 
-        with open(
-            DATA_FILE,
-            "r",
-            encoding="utf-8"
-        ) as file:
+        with get_connection() as conn:
 
-            data = json.load(file)
+            with conn.cursor() as cur:
 
-        # -------------------------------------------------
-        # Make sure JSON is an object
-        # -------------------------------------------------
+                cur.execute(
+                    """
+                    SELECT data
+                    FROM newsletters
+                    ORDER BY created_at DESC, id DESC
+                    LIMIT 1
+                    """
+                )
 
-        if not isinstance(
-            data,
-            dict
-        ):
+                row = cur.fetchone()
 
-            print(
-                "Newsletter data is not a valid JSON object."
-            )
+                # -------------------------------------------------
+                # No newsletter stored yet
+                # -------------------------------------------------
 
-            return get_default_newsletter_data()
+                if not row:
 
-        # -------------------------------------------------
-        # Add missing fields without destroying
-        # existing newsletter content.
-        # -------------------------------------------------
+                    print(
+                        "No newsletter found in database."
+                    )
 
-        defaults = get_default_newsletter_data()
+                    return get_default_newsletter_data()
 
-        for key, default_value in defaults.items():
+                data = row[0]
 
-            if key not in data:
+                # -------------------------------------------------
+                # Convert JSON string if necessary
+                # -------------------------------------------------
 
-                data[key] = default_value
+                if isinstance(
+                    data,
+                    str
+                ):
 
-        return data
+                    data = json.loads(
+                        data
+                    )
 
-    # -------------------------------------------------
-    # Invalid JSON / read failure
-    # -------------------------------------------------
+                # -------------------------------------------------
+                # Make sure data is an object
+                # -------------------------------------------------
+
+                if not isinstance(
+                    data,
+                    dict
+                ):
+
+                    print(
+                        "Newsletter data is not a valid JSON object."
+                    )
+
+                    return get_default_newsletter_data()
+
+                # -------------------------------------------------
+                # Add missing fields without destroying
+                # existing newsletter content.
+                # -------------------------------------------------
+
+                defaults = get_default_newsletter_data()
+
+                for key, default_value in defaults.items():
+
+                    if key not in data:
+
+                        data[key] = default_value
+
+                return data
 
     except Exception as error:
 
@@ -102,7 +186,7 @@ def load_newsletter_data():
         )
 
         # IMPORTANT:
-        # Do not create/overwrite the existing file here.
-        # The caller receives safe fallback data instead.
+        # Do not overwrite database data on failure.
+        # Return safe fallback data instead.
 
         return get_default_newsletter_data()

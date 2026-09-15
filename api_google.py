@@ -2,7 +2,10 @@ import json
 import os
 from pathlib import Path
 
-from newsletter_data import load_newsletter_data
+from newsletter_data import (
+    load_newsletter_data,
+    save_newsletter_data,
+)
 
 from fastapi import FastAPI, Query, Header, HTTPException
 from fastapi.responses import HTMLResponse
@@ -353,68 +356,17 @@ def publish_newsletter(
     )
 
     # -------------------------------------------------
-    # Output directory
+    # Save newsletter to Supabase PostgreSQL
     # -------------------------------------------------
-
-    output_dir = Path(
-        "output"
-    )
-
-    output_dir.mkdir(
-        exist_ok=True
-    )
-
-    json_file = (
-        output_dir
-        / "newsletter.json"
-    )
-
-    # -------------------------------------------------
-    # Write temporary file first
-    # -------------------------------------------------
-
-    temp_file = (
-        output_dir
-        / "newsletter.tmp.json"
-    )
 
     try:
-
-        temp_file.write_text(
-            json.dumps(
-                newsletter_data,
-                ensure_ascii=False,
-                indent=2,
-            ),
-            encoding="utf-8",
-        )
-
-        # -------------------------------------------------
-        # Atomic replacement
-        # -------------------------------------------------
-
-        temp_file.replace(
-            json_file
-        )
+        save_newsletter_data(newsletter_data)
 
     except Exception as error:
-
-        # -------------------------------------------------
-        # Remove temporary file if necessary
-        # -------------------------------------------------
-
-        try:
-
-            if temp_file.exists():
-                temp_file.unlink()
-
-        except Exception:
-            pass
-
         raise HTTPException(
             status_code=500,
             detail=(
-                f"Failed to publish newsletter: "
+                f"Failed to save newsletter: "
                 f"{error}"
             ),
         )
