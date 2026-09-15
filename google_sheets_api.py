@@ -47,3 +47,8 @@ def unsubscribe(email: str):
         "action": "unsubscribe",
         "email": email,
     })
+def check_subscriber(email: str):
+    return _call_apps_script({
+        "action": "check_subscriber",
+        "email": email
+    })

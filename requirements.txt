@@ -2,10 +2,12 @@ langgraph
 langchain
 langchain-google-genai
 langchain-community
-tavily-python
+exa-py
 pydantic
+pydantic[email]
 python-dotenv
-streamlit
-markdown
+fastapi
+uvicorn
+requests
 httpx
-mcp
+markdown

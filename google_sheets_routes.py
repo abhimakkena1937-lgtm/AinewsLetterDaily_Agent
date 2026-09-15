@@ -1,13 +1,21 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, EmailStr
 
-from google_sheets_api import subscribe, unsubscribe
+from google_sheets_api import (
+    subscribe,
+    unsubscribe,
+    check_subscriber,
+)
 
 
 router = APIRouter()
 
 
 class SubscribeRequest(BaseModel):
+    email: EmailStr
+
+
+class CheckSubscriberRequest(BaseModel):
     email: EmailStr
 
 
@@ -33,3 +41,14 @@ def unsubscribe_user(request: SubscribeRequest):
             "Successfully unsubscribed"
         )
     }
+
+
+@router.post("/check-subscriber")
+def check_subscriber_user(
+    request: CheckSubscriberRequest
+):
+    result = check_subscriber(
+        str(request.email)
+    )
+
+    return result

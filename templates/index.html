@@ -2,167 +2,3544 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AI Daily</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <style>
+    <meta
+        name="description"
+        content="AI Daily - Curated AI news, startups, research, technology and AI leaders."
+    >
 
-        * {
-            box-sizing: border-box;
-        }
+    <title>AI Daily Newsletter</title>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
 
-        .container {
-            width: 90%;
-            max-width: 500px;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-        }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
+<style>
+.account-modal {
+    text-align: center;
+}
 
-        p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 12px;
-            border: none;
-            border-radius: 6px;
-            background: #111;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #333;
-        }
-
-        #message {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-    </style>
+.account-email {
+    margin: 20px 0;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #f5f3ff;
+    color: #3f3a67;
+    font-weight: 600;
+    word-break: break-word;
+}
+</style>
 
 </head>
 
+
 <body>
 
-    <div class="container">
 
-        <h1>🤖 AI Daily</h1>
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="site-header">
+
+    <div class="header-container">
+
+
+        <!-- LOGO -->
+
+        <a
+            href="#home"
+            class="logo"
+        >
+
+            <div class="logo-icon">
+                AI
+            </div>
+
+            <span class="logo-text">
+                AI <strong>NewsLetter</strong>
+            </span>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="main-nav">
+
+            <a
+                href="#home"
+                class="nav-link active"
+            >
+                Home
+            </a>
+
+            <a
+                href="#categories"
+                class="nav-link"
+            >
+                Categories
+            </a>
+
+            <a
+                href="#latest"
+                class="nav-link"
+            >
+                Newsletter
+            </a>
+
+            <a
+                href="#about"
+                class="nav-link"
+            >
+                About
+            </a>
+
+        </nav>
+
+
+        <!-- SEARCH -->
+
+        <div class="header-search">
+
+            <span class="search-icon">
+                🔍
+            </span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search topics, companies, trends..."
+                onkeyup="handleSearch(event)"
+            >
+
+        </div>
+
+
+        <!-- HEADER BUTTONS -->
+
+        <div class="header-actions">
+
+            <button
+                id="signInButton"
+                class="btn-signin"
+                onclick="handleAccountClick()"
+            >
+                Sign In
+            </button>
+
+
+            <button
+                type="button"
+                class="header-subscribe-btn"
+                onclick="scrollToSubscribe()"
+            >
+                Subscribe
+            </button>
+
+        </div>
+
+
+        <!-- MOBILE -->
+
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            onclick="toggleMobileMenu()"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <!-- MOBILE MENU -->
+
+    <div
+        id="mobileMenu"
+        class="mobile-menu"
+    >
+
+        <a
+            href="#home"
+            onclick="closeMobileMenu()"
+        >
+            Home
+        </a>
+
+        <a
+            href="#categories"
+            onclick="closeMobileMenu()"
+        >
+            Categories
+        </a>
+
+        <a
+            href="#latest"
+            onclick="closeMobileMenu()"
+        >
+            Newsletter
+        </a>
+
+        <a
+            href="#about"
+            onclick="closeMobileMenu()"
+        >
+            About
+        </a>
+
+        <button
+            type="button"
+            onclick="handleAccountClick(); closeMobileMenu()"
+        >
+            Sign In
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<main>
+
+<section
+    class="hero-section"
+    id="home"
+>
+
+    <div class="hero-container">
+
+
+        <!-- LEFT SIDE -->
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                STAY AHEAD WITH AI
+            </div>
+
+
+            <h1>
+
+                Curated Insights for a
+
+                <span>
+                    Smarter Tomorrow
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Get the latest on AI, startups,
+                technology, research and more —
+                curated and delivered straight to
+                your inbox.
+
+            </p>
+
+
+            <div class="hero-benefits">
+
+                <div class="benefit">
+
+                    <span class="benefit-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Free forever
+                    </span>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <span class="benefit-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Daily updates
+                    </span>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <span class="benefit-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        No spam
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             NEW HERO VISUAL
+        ================================================= -->
+
+        <div class="hero-visual">
+
+
+            <!-- BACKGROUND DECORATION -->
+
+            <div class="hero-circle"></div>
+
+            <div class="hero-dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+
+
+            <!-- LAPTOP -->
+
+            <div class="laptop-wrapper">
+
+                <div class="laptop-screen">
+
+                    <div class="screen-top">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <div class="screen-title">
+
+                        <div class="screen-ai-icon">
+                            AI
+                        </div>
+
+                        <strong>
+                            AI News
+                        </strong>
+
+                    </div>
+
+
+                    <div class="screen-news">
+
+                        <div class="screen-news-image"></div>
+
+                        <div class="screen-lines">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="screen-news">
+
+                        <div class="screen-news-image second"></div>
+
+                        <div class="screen-lines">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="screen-news">
+
+                        <div class="screen-news-image third"></div>
+
+                        <div class="screen-lines">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="laptop-base">
+
+                    <div class="keyboard"></div>
+
+                    <div class="trackpad"></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LEFT FLOATING CARD -->
+
+            <div class="floating-card floating-card-left">
+
+                <div class="floating-icon">
+                    ▥
+                </div>
+
+                <strong>
+                    Latest
+                </strong>
+
+                <strong>
+                    AI Updates
+                </strong>
+
+                <div class="floating-line"></div>
+
+                <div class="small-line"></div>
+
+                <div class="small-line short"></div>
+
+            </div>
+
+
+
+            <!-- RIGHT TOP CARD -->
+
+            <div class="floating-card floating-card-right">
+
+                <div class="floating-icon">
+                    🚀
+                </div>
+
+                <strong>
+                    Startups
+                </strong>
+
+                <strong>
+                    &amp; Innovation
+                </strong>
+
+                <div class="small-line"></div>
+
+                <div class="small-line short"></div>
+
+            </div>
+
+
+
+            <!-- RIGHT BOTTOM CARD -->
+
+            <div class="floating-card floating-card-research">
+
+                <div class="floating-icon">
+                    ▤
+                </div>
+
+                <strong>
+                    Research
+                </strong>
+
+                <strong>
+                    &amp; Breakthroughs
+                </strong>
+
+                <div class="small-line"></div>
+
+                <div class="small-line short"></div>
+
+            </div>
+
+
+
+            <!-- PLANT -->
+
+            <div class="hero-plant">
+
+                <div class="plant-leaf leaf-one"></div>
+                <div class="plant-leaf leaf-two"></div>
+                <div class="plant-leaf leaf-three"></div>
+                <div class="plant-leaf leaf-four"></div>
+
+                <div class="plant-pot"></div>
+
+            </div>
+
+
+
+            <!-- NOTEBOOK -->
+
+            <div class="hero-notebook">
+
+                <div class="notebook-cover"></div>
+
+                <div class="notebook-pen"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     EXPLORE TOPICS
+===================================================== -->
+
+<section
+    class="topics-section"
+    id="categories"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Explore Topics
+            </h2>
+
+            <p>
+                Explore the latest AI news,
+                startups, research and technology.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="view-all-btn"
+            onclick="selectCategory('all')"
+        >
+            View All →
+        </button>
+
+    </div>
+
+
+
+    <div class="topics-grid">
+
+
+        <!-- AI & ML -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('AI & ML')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=85"
+                    alt="Artificial Intelligence"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    AI &amp; ML
+                </h3>
+
+                <p>
+                    Latest artificial intelligence
+                    developments, models and innovations.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        AI &amp; Machine Learning
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STARTUPS -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('Startups')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85"
+                    alt="AI Startups"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    Startups
+                </h3>
+
+                <p>
+                    Funding rounds, product launches
+                    and acquisitions in the AI ecosystem.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        AI Startups
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TECH -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('Tech & Products')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85"
+                    alt="Technology"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    Tech &amp; Products
+                </h3>
+
+                <p>
+                    New tools, product updates and
+                    technology innovations.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        Technology
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOOL OF THE DAY -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('Tool of the Day')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=85"
+                    alt="AI Tool of the Day"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    Tool of the Day
+                </h3>
+
+                <p>
+                    Discover a useful AI tool,
+                    platform or product every day.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        Daily AI Tool
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RESEARCH -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('Research')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=85"
+                    alt="AI Research"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    Research
+                </h3>
+
+                <p>
+                    Papers, breakthroughs and the latest
+                    academic innovations.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        AI Research
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AI PEOPLE -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('AI People')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=900&q=85"
+                    alt="AI Team"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="topic-content">
+
+                <h3>
+                    AI People
+                </h3>
+
+                <p>
+                    Leaders, researchers, builders and
+                    AI creators shaping the future.
+                </p>
+
+
+                <div class="topic-footer">
+
+                    <span>
+                        AI Leaders
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     LATEST NEWSLETTER
+===================================================== -->
+
+<section
+    class="latest-section"
+    id="latest"
+>
+
+    <div class="latest-layout">
+
+
+        <div class="articles-column">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Latest from AI NewsLetter
+                    </h2>
+
+                    <p id="newsletterDate">
+                        Loading latest newsletter...
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="view-all-btn"
+                    onclick="selectCategory('all')"
+                >
+                    View All Articles →
+                </button>
+
+            </div>
+
+
+            <div
+                id="selectedTopic"
+                class="selected-topic"
+            >
+                All Content
+            </div>
+
+            <div
+                id="articlesContainer"
+                class="articles-container"
+            >
+
+                <div class="loading-card">
+
+                    <div class="loading-spinner"></div>
+
+                    <p>
+                        Loading latest AI content...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+
+            <!-- SINGLE SUBSCRIBE -->
+
+            <div
+                class="sidebar-subscribe"
+                id="subscribe"
+            >
+
+                <div class="sidebar-subscribe-icon">
+                    ✉
+                </div>
+
+
+                <div class="sidebar-badge">
+                    Join AI enthusiasts
+                </div>
+
+
+                <h3>
+                    Subscribe to AI NewsLetter
+                </h3>
+
+
+                <p>
+                    Get personalized updates on the
+                    topics you care about.
+                </p>
+
+
+                <form
+                    class="sidebar-form"
+                    onsubmit="subscribeUser(event)"
+                >
+
+                    <input
+                        type="email"
+                        id="sidebarEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+
+                    <button
+                        type="submit"
+                    >
+                        →
+                    </button>
+
+                </form>
+
+
+                <div
+                    id="sidebarMessage"
+                    class="subscribe-message"
+                ></div>
+
+
+                <div class="sidebar-benefits">
+
+                    <span>
+                        ✓ Free
+                    </span>
+
+                    <span>
+                        ✓ Daily
+                    </span>
+
+                    <span>
+                        ✓ No spam
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TRENDING -->
+
+            <div class="trending-card">
+
+                <h3>
+                    🔥 Trending Topics
+                </h3>
+
+
+                <div class="trending-item">
+
+                    <span class="trend-number">
+                        1
+                    </span>
+
+                    <span>
+                        GPT
+                    </span>
+
+                    <small>
+                        Trending
+                    </small>
+
+                </div>
+
+
+                <div class="trending-item">
+
+                    <span class="trend-number">
+                        2
+                    </span>
+
+                    <span>
+                        AI Startups
+                    </span>
+
+                    <small>
+                        High interest
+                    </small>
+
+                </div>
+
+
+                <div class="trending-item">
+
+                    <span class="trend-number">
+                        3
+                    </span>
+
+                    <span>
+                        Autonomous Agents
+                    </span>
+
+                    <small>
+                        Rising
+                    </small>
+
+                </div>
+
+
+                <div class="trending-item">
+
+                    <span class="trend-number">
+                        4
+                    </span>
+
+                    <span>
+                        AI Healthcare
+                    </span>
+
+                    <small>
+                        Rising
+                    </small>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section
+    class="about-section"
+    id="about"
+>
+
+    <div class="about-container">
+
+        <div class="about-content">
+
+            <div class="hero-label">
+                ABOUT AI DAILY
+            </div>
+
+
+            <h2>
+                Your daily signal in the
+                world of AI.
+            </h2>
+
+
+            <p>
+                AI NewsLetter brings together the
+                latest artificial intelligence news,
+                startup activity, technology launches,
+                research and AI people in one place.
+            </p>
+
+
+            <p>
+                Our automated research pipeline
+                continuously discovers and organizes
+                useful AI information so you can spend
+                less time searching and more time
+                understanding what's happening.
+            </p>
+
+        </div>
+
+
+        <div class="about-stats">
+
+            <div class="stat-card">
+
+                <strong>
+                    Daily
+                </strong>
+
+                <span>
+                    AI Updates
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>
+                    AI
+                </strong>
+
+                <span>
+                    Focused
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>
+                    Free
+                </strong>
+
+                <span>
+                    Newsletter
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <a
+                href="#home"
+                class="logo footer-logo"
+            >
+
+                <div class="logo-icon">
+                    AI
+                </div>
+
+                <span class="logo-text">
+                    AI <strong>NewsLetter</strong>
+                </span>
+
+            </a>
+
+
+            <p>
+                Curated AI insights for a
+                smarter tomorrow.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <div>
+
+                <h4>
+                    Explore
+                </h4>
+
+                <a href="#categories">
+                    Categories
+                </a>
+
+                <a href="#latest">
+                    Latest News
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h4>
+                    Newsletter
+                </h4>
+
+                <a
+                    href="#subscribe"
+                    onclick="scrollToSubscribe()"
+                >
+                    Subscribe
+                </a>
+
+                <a href="#home">
+                    Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 AI NewsLetter
+        </span>
+
+        <span>
+            Built with AI
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     SIGN IN MODAL
+===================================================== -->
+
+<div
+    id="signInModal"
+    class="modal-overlay"
+    onclick="closeSignInOutside(event)"
+>
+
+    <div class="signin-modal">
+
+        <button
+            type="button"
+            class="modal-close"
+            onclick="closeSignIn()"
+        >
+            ×
+        </button>
+
+
+        <div class="signin-modal-icon">
+            AI
+        </div>
+
+
+        <h2>
+            Welcome back
+        </h2>
+
 
         <p>
-            Get the latest AI news, startups, research papers,
-            GitHub projects and AI people delivered to your inbox.
+            Sign in to access your AI NewsLetter preferences.
         </p>
 
-        <form id="subscribeForm">
+
+        <form
+            onsubmit="signInUser(event)"
+        >
+
+            <label for="signInEmail">
+                Email address
+            </label>
+
 
             <input
                 type="email"
-                id="email"
-                placeholder="Enter your email"
+                id="signInEmail"
+                placeholder="you@example.com"
                 required
             >
 
-            <button type="submit">
-                Subscribe
+
+            <button
+                type="submit"
+                class="signin-submit"
+            >
+                Continue
             </button>
 
         </form>
 
-        <div id="message"></div>
+
+        <div
+            id="signInMessage"
+            class="signin-message"
+        ></div>
+
+
+        <div class="signin-divider">
+            <span>
+                New here?
+            </span>
+        </div>
+
+
+        <button
+            type="button"
+            class="modal-subscribe-btn"
+            onclick="closeSignIn(); scrollToSubscribe()"
+        >
+            Subscribe to AI NewsLetter
+        </button>
 
     </div>
 
-    <script>
+</div>
 
-        const form =
-            document.getElementById("subscribeForm");
 
-        const message =
-            document.getElementById("message");
 
-        form.addEventListener(
-            "submit",
-            async function(event) {
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
-                event.preventDefault();
+<script>
 
-                const email =
-                    document.getElementById("email").value;
+let newsletterData = {
+    date: null,
+    news: [],
+    startups: [],
+    people: [],
+    tweets: [],
+    github_repos: [],
+    research_papers: [],
+    tool_of_the_day: null
+};
 
-                message.innerText =
-                    "Subscribing...";
 
-                try {
 
-                    const response =
-                        await fetch(
-                            "/subscribe",
-                            {
-                                method: "POST",
+/* =====================================================
+   LOAD NEWSLETTER
+===================================================== */
 
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
+async function loadNewsletter() {
 
-                                body: JSON.stringify({
-                                    email: email
-                                })
-                            }
-                        );
+    const container =
+        document.getElementById(
+            "articlesContainer"
+        );
 
-                    const data =
-                        await response.json();
 
-                    message.innerText =
-                        data.message;
+    try {
 
-                } catch (error) {
+        const response =
+            await fetch(
+                "/api/newsletter"
+            );
 
-                    message.innerText =
-                        "Something went wrong.";
 
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load newsletter"
+            );
+
+        }
+
+
+        newsletterData =
+            await response.json();
+
+
+        updateNewsletterDate();
+
+
+        renderArticles(
+            getAllItems()
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        container.innerHTML = `
+
+            <div class="error-card">
+
+                <h3>
+                    Unable to load newsletter
+                </h3>
+
+                <p>
+                    Please try refreshing the page.
+                </p>
+
+                <button
+                    type="button"
+                    onclick="loadNewsletter()"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function updateNewsletterDate() {
+
+    const dateElement =
+        document.getElementById(
+            "newsletterDate"
+        );
+
+
+    if (!newsletterData.date) {
+
+        dateElement.textContent =
+            "Latest AI updates";
+
+        return;
+
+    }
+
+
+    try {
+
+        const date =
+            new Date(
+                newsletterData.date
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            dateElement.textContent =
+                newsletterData.date;
+
+            return;
+
+        }
+
+
+        dateElement.textContent =
+            "Updated " +
+            date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+    } catch {
+
+        dateElement.textContent =
+            newsletterData.date;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   GET ALL ITEMS
+===================================================== */
+
+function getAllItems() {
+
+    const items = [];
+
+
+    (
+        newsletterData.news || []
+    ).forEach(item => {
+
+        items.push({
+            type: "news",
+            data: item
+        });
+
+    });
+
+
+    (
+        newsletterData.startups || []
+    ).forEach(item => {
+
+        items.push({
+            type: "startup",
+            data: item
+        });
+
+    });
+
+
+    (
+        newsletterData.people || []
+    ).forEach(item => {
+
+        items.push({
+            type: "people",
+            data: item
+        });
+
+    });
+
+
+    (
+        newsletterData.github_repos || []
+    ).forEach(item => {
+
+        items.push({
+            type: "github",
+            data: item
+        });
+
+    });
+
+
+    (
+        newsletterData.research_papers || []
+    ).forEach(item => {
+
+        items.push({
+            type: "research",
+            data: item
+        });
+
+    });
+
+
+    // Tool of the Day
+    const tool = newsletterData.tool_of_the_day;
+
+    if (tool && !Array.isArray(tool)) {
+
+        items.push({
+            type: "tool",
+            data: tool
+        });
+
+    } else if (Array.isArray(tool)) {
+
+        tool.forEach(item => {
+
+            if (item) {
+
+                items.push({
+                    type: "tool",
+                    data: item
+                });
+
+            }
+
+        });
+
+    }
+
+
+    return items;
+
+}
+
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+function selectCategory(category) {
+
+    let items = [];
+
+    if (category === "all") {
+
+        items = getAllItems();
+
+    }
+
+    else if (category === "Startups") {
+
+        items = (newsletterData.startups || []).map(item => ({
+            type: "startup",
+            data: item
+        }));
+
+    }
+
+    else if (category === "AI People") {
+
+        items = (newsletterData.people || []).map(item => ({
+            type: "people",
+            data: item
+        }));
+
+    }
+
+    else if (category === "Research") {
+
+        items = (newsletterData.research_papers || []).map(item => ({
+            type: "research",
+            data: item
+        }));
+
+    }
+
+    else if (category === "Tech & Products") {
+
+        items = filterNewsByCategory([
+            "technology",
+            "tech",
+            "products",
+            "product",
+            "tools",
+            "innovation"
+        ]);
+
+    }
+
+    else if (category === "Business") {
+
+        items = filterNewsByCategory([
+            "business",
+            "finance",
+            "markets",
+            "investment",
+            "funding",
+            "strategy"
+        ]);
+
+    }
+
+    else if (category === "AI & ML") {
+
+        items = filterNewsByCategory([
+            "ai",
+            "artificial intelligence",
+            "machine learning",
+            "ml",
+            "deep learning",
+            "generative ai",
+            "genai",
+            "llm",
+            "llms",
+            "agents",
+            "agentic ai"
+        ]);
+
+    }
+
+    else if (category === "Tool of the Day") {
+
+        const tool = newsletterData.tool_of_the_day;
+
+        if (tool && !Array.isArray(tool)) {
+
+            items = [{
+                type: "tool",
+                data: tool
+            }];
+
+        } else if (Array.isArray(tool)) {
+
+            items = tool
+                .filter(item => item)
+                .map(item => ({
+                    type: "tool",
+                    data: item
+                }));
+
+        }
+
+    }
+
+    else if (category === "AI News") {
+
+        items = (newsletterData.news || []).map(item => ({
+            type: "news",
+            data: item
+        }));
+
+    }
+
+    renderArticles(items);
+
+    const selectedTopic =
+        document.getElementById("selectedTopic");
+
+    if (selectedTopic) {
+
+        selectedTopic.textContent =
+            category === "all"
+                ? "All Content"
+                : category;
+
+    }
+
+    // Update the newsletter heading so users know which topic
+    // they are currently viewing.
+    const heading = document.querySelector(".articles-column .section-header h2");
+
+    if (heading) {
+
+        heading.textContent =
+            category === "all"
+                ? "Latest from AI NewsLetter"
+                : category;
+
+    }
+
+    // Move the user directly to the filtered newsletter content.
+    const latestSection = document.getElementById("latest");
+
+    if (latestSection) {
+
+        latestSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
+
+
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function filterNewsByCategory(categories) {
+
+    const wanted = categories.map(
+        value => String(value).trim().toLowerCase()
+    );
+
+    return (newsletterData.news || [])
+        .filter(item => {
+
+            const category =
+                String(item.category || "")
+                    .trim()
+                    .toLowerCase();
+
+            const title =
+                String(item.title || "")
+                    .trim()
+                    .toLowerCase();
+
+            const summary =
+                String(item.summary || "")
+                    .trim()
+                    .toLowerCase();
+
+            const company =
+                String(item.company || "")
+                    .trim()
+                    .toLowerCase();
+
+            // First match the explicit category.
+            if (
+                wanted.some(value =>
+                    category === value ||
+                    category.includes(value) ||
+                    value.includes(category)
+                )
+            ) {
+                return true;
+            }
+
+            // If the category field is broad or missing, also check
+            // the item's text so topic cards still return useful content.
+            const searchable =
+                `${title} ${summary} ${company} ${category}`;
+
+            return wanted.some(value =>
+                searchable.includes(value)
+            );
+
+        })
+        .map(item => ({
+            type: "news",
+            data: item
+        }));
+
+}
+
+
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderArticles(items) {
+
+    const container =
+        document.getElementById(
+            "articlesContainer"
+        );
+
+
+    if (!items || items.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-card">
+
+                <div class="empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    No content available
+                </h3>
+
+                <p>
+                    There are currently no items
+                    available in this category.
+                </p>
+
+                <button
+                    type="button"
+                    class="view-all-btn"
+                onclick="selectCategory('all')"
+                >
+                    View All Content
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        items
+            .map(
+                item =>
+                    createArticleCard(
+                        item.type,
+                        item.data
+                    )
+            )
+            .join("");
+
+}
+
+
+
+/* =====================================================
+   CARD ROUTER
+===================================================== */
+
+function createArticleCard(type, item) {
+
+    if (type === "startup") {
+
+        return createStartupCard(item);
+
+    }
+
+
+    if (type === "people") {
+
+        return createPeopleCard(item);
+
+    }
+
+
+    if (type === "github") {
+
+        return createGithubCard(item);
+
+    }
+
+
+    if (type === "research") {
+
+        return createResearchCard(item);
+
+    }
+
+
+    if (type === "tool") {
+
+        return createToolCard(item);
+
+    }
+
+
+    return createNewsCard(item);
+
+}
+
+
+
+/* =====================================================
+   NEWS CARD
+===================================================== */
+
+function createNewsCard(item) {
+
+    const title =
+        item.title ||
+        "AI News";
+
+
+    const summary =
+        item.summary ||
+        "Latest AI development.";
+
+
+    const source =
+        item.source ||
+        "AI NewsLetter";
+
+
+    const url =
+        safeUrl(item.url);
+
+
+    const image =
+        safeImage(item.image_url);
+
+
+    const category =
+        item.category ||
+        "AI";
+
+
+    const date =
+        formatDate(
+            item.published_at
+        );
+
+
+    return `
+
+        <article class="article-card">
+
+            <div class="article-image">
+
+                ${
+                    image
+
+                    ?
+
+                    `<img
+                        src="${image}"
+                        alt="${escapeHtml(title)}"
+                        loading="lazy"
+                    >`
+
+                    :
+
+                    `<div class="article-image-placeholder">
+                        AI
+                    </div>`
                 }
 
+            </div>
+
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category">
+                        ${escapeHtml(category)}
+                    </span>
+
+                    <span class="article-date">
+                        ${escapeHtml(date)}
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(title)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        ${escapeHtml(source)}
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            Read more →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   STARTUP
+===================================================== */
+
+function createStartupCard(item) {
+
+    const title =
+        item.startup_name ||
+        "AI Startup";
+
+
+    const summary =
+        item.description ||
+        "AI startup development.";
+
+
+    const image =
+        safeImage(item.image_url);
+
+
+    const url =
+        safeUrl(item.url);
+
+
+    return `
+
+        <article class="article-card">
+
+            <div class="article-image">
+
+                ${
+                    image
+
+                    ?
+
+                    `<img
+                        src="${image}"
+                        alt="${escapeHtml(title)}"
+                        loading="lazy"
+                    >`
+
+                    :
+
+                    `<div class="article-image-placeholder startup-placeholder">
+                        STARTUP
+                    </div>`
+                }
+
+            </div>
+
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category startup-label">
+                        Startups
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(title)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                ${
+                    item.funding
+
+                    ?
+
+                    `<div class="funding-info">
+                        Funding:
+                        ${escapeHtml(
+                            String(item.funding)
+                        )}
+                    </div>`
+
+                    :
+
+                    ""
+                }
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        ${
+                            item.source
+                            ?
+                            escapeHtml(
+                                String(item.source)
+                            )
+                            :
+                            "AI Startup"
+                        }
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            Read more →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   PEOPLE
+===================================================== */
+
+function createPeopleCard(item) {
+
+    const person =
+        item.person ||
+        "AI Leader";
+
+
+    const summary =
+        item.summary ||
+        item.tweet ||
+        "AI industry insight.";
+
+
+    const url =
+        safeUrl(item.url);
+
+
+    return `
+
+        <article class="article-card">
+
+            <div class="article-image">
+                ${
+                    safeImage(item.image_url)
+                        ? `<img src="${safeImage(item.image_url)}" alt="${escapeHtml(item.person || "AI People")}" loading="lazy">`
+                        : `<div class="article-image-placeholder people-placeholder">👤</div>`
+                }
+            </div>
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category people-label">
+                        AI People
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(person)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        AI People
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            View →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   GITHUB
+===================================================== */
+
+function createGithubCard(item) {
+
+    const title =
+        item.repo_name ||
+        "GitHub Repository";
+
+
+    const summary =
+        item.description ||
+        item.reason ||
+        "New AI GitHub repository.";
+
+
+    const url =
+        safeUrl(item.url);
+
+
+    return `
+
+        <article class="article-card">
+
+            <div class="article-image">
+
+                <div class="article-image-placeholder github-placeholder">
+                    &lt;/&gt;
+                </div>
+
+            </div>
+
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category github-label">
+                        GitHub
+                    </span>
+
+
+                    ${
+                        item.language
+
+                        ?
+
+                        `<span class="article-date">
+                            ${escapeHtml(
+                                String(item.language)
+                            )}
+                        </span>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(title)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        ${
+                            item.stars !== null &&
+                            item.stars !== undefined
+                            ?
+                            "★ " +
+                            escapeHtml(
+                                String(item.stars)
+                            )
+                            :
+                            "GitHub"
+                        }
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            View Repository →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   RESEARCH
+===================================================== */
+
+function createResearchCard(item) {
+
+    const title =
+        item.title ||
+        "AI Research Paper";
+
+
+    const summary =
+        item.summary ||
+        item.reason ||
+        "New AI research.";
+
+
+    const url =
+        safeUrl(item.url);
+
+
+    const authors =
+        Array.isArray(item.authors)
+        ?
+        item.authors.join(", ")
+        :
+        "";
+
+
+    return `
+
+        <article class="article-card">
+
+            <div class="article-image">
+
+                ${
+                    item.image_url
+
+                    ?
+
+                    `<img
+                        src="${safeImage(item.image_url)}"
+                        alt="${escapeHtml(title)}"
+                        loading="lazy"
+                    >`
+
+                    :
+
+                    `<div class="article-image-placeholder research-placeholder">
+                        PAPER
+                    </div>`
+                }
+
+            </div>
+
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category research-label">
+                        Research
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(title)}
+                </h3>
+
+
+                ${
+                    authors
+
+                    ?
+
+                    `<div class="authors">
+                        ${escapeHtml(authors)}
+                    </div>`
+
+                    :
+
+                    ""
+                }
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        Research
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            Read Paper →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   TOOL OF THE DAY
+===================================================== */
+
+function createToolCard(item) {
+
+    const title =
+        item.name ||
+        item.title ||
+        item.tool_name ||
+        "AI Tool of the Day";
+
+
+    const summary =
+        item.description ||
+        item.summary ||
+        item.reason ||
+        "A useful AI tool worth exploring.";
+
+
+    const url =
+        safeUrl(
+            item.url ||
+            item.website ||
+            item.link
+        );
+
+
+    const image =
+        safeImage(item.image_url);
+
+
+    const category =
+        item.category ||
+        "AI Tool";
+
+
+    return `
+
+        <article class="article-card tool-card">
+
+            <div class="article-image">
+
+                ${
+                    image
+
+                    ?
+
+                    `<img
+                        src="${image}"
+                        alt="${escapeHtml(title)}"
+                        loading="lazy"
+                    >`
+
+                    :
+
+                    `<div class="article-image-placeholder tool-placeholder">
+                        TOOL
+                    </div>`
+                }
+
+            </div>
+
+
+            <div class="article-content">
+
+                <div class="article-meta">
+
+                    <span class="article-category tool-label">
+                        ${escapeHtml(category)}
+                    </span>
+
+                    <span class="article-date">
+                        Tool of the Day
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHtml(title)}
+                </h3>
+
+
+                <p>
+                    ${escapeHtml(summary)}
+                </p>
+
+
+                <div class="article-footer">
+
+                    <span class="article-source">
+                        AI NewsLetter
+                    </span>
+
+
+                    ${
+                        url
+
+                        ?
+
+                        `<a
+                            href="${url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="read-more"
+                        >
+                            Explore Tool →
+                        </a>`
+
+                        :
+
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function handleSearch(event) {
+
+    if (event.key !== "Enter") {
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const query =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!query) {
+
+        selectCategory("all");
+
+        return;
+
+    }
+
+
+    const results =
+        getAllItems()
+            .filter(item => {
+
+                const searchable =
+                    JSON.stringify(
+                        item.data
+                    ).toLowerCase();
+
+
+                return searchable.includes(
+                    query
+                );
+
+            });
+
+
+    renderArticles(results);
+
+
+    document
+        .getElementById("latest")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+
+/* =====================================================
+   SUBSCRIBE
+===================================================== */
+
+async function subscribeUser(event) {
+
+    event.preventDefault();
+
+
+    const form =
+        event.target;
+
+
+    const input =
+        form.querySelector(
+            'input[type="email"]'
+        );
+
+
+    const email =
+        input.value.trim();
+
+
+    const message =
+        document.getElementById(
+            "sidebarMessage"
+        );
+
+
+    message.textContent =
+        "Subscribing...";
+
+
+    message.className =
+        "subscribe-message loading-message";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/subscribe",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                "Subscription failed"
+            );
+
+        }
+
+
+        if (result.success === false) {
+
+            throw new Error(
+                result.message ||
+                "Subscription failed"
+            );
+
+        }
+
+
+        message.textContent =
+            result.message ||
+            "Successfully subscribed to AI Daily!";
+
+
+        message.className =
+            "subscribe-message success-message";
+
+
+        input.value = "";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        message.textContent =
+            error.message ||
+            "Unable to subscribe. Please try again.";
+
+
+        message.className =
+            "subscribe-message error-message";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   SIGN IN
+===================================================== */
+
+function openSignIn() {
+
+    const modal =
+        document.getElementById("signInModal");
+
+    const input =
+        document.getElementById("signInEmail");
+
+    const message =
+        document.getElementById("signInMessage");
+
+
+    const savedEmail =
+        localStorage.getItem(
+            "ai_newsletter_email"
+        );
+
+
+    input.value =
+        savedEmail || "";
+
+    message.textContent = "";
+
+    message.className =
+        "signin-message";
+
+
+    modal.classList.add(
+        "modal-visible"
+    );
+
+
+    setTimeout(() => {
+        input.focus();
+    }, 100);
+}
+
+
+function handleAccountClick() {
+
+    const email =
+        localStorage.getItem(
+            "ai_newsletter_email"
+        );
+
+
+    if (email) {
+
+        showAccountInfo();
+
+    } else {
+
+        openSignIn();
+
+    }
+}
+
+
+function showAccountInfo() {
+
+    const email =
+        localStorage.getItem(
+            "ai_newsletter_email"
+        );
+
+
+    if (!email) {
+
+        openSignIn();
+        return;
+    }
+
+
+    const existing =
+        document.getElementById(
+            "accountModal"
+        );
+
+
+    if (existing) {
+
+        existing.remove();
+
+    }
+
+
+    const accountModal =
+        document.createElement("div");
+
+    accountModal.id =
+        "accountModal";
+
+    accountModal.className =
+        "modal-overlay modal-visible";
+
+
+    accountModal.innerHTML = `
+
+        <div
+            class="signin-modal account-modal"
+            onclick="event.stopPropagation()"
+        >
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeAccountModal()"
+            >
+                ×
+            </button>
+
+            <div class="signin-modal-icon">
+                AI
+            </div>
+
+            <h2>
+                Your Account
+            </h2>
+
+            <p>
+                You are signed in to AI NewsLetter.
+            </p>
+
+            <div class="account-email">
+                ${escapeHtml(email)}
+            </div>
+
+            <button
+                type="button"
+                class="signin-submit"
+                onclick="logoutUser()"
+            >
+                Log Out
+            </button>
+
+        </div>
+    `;
+
+
+    accountModal.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === accountModal
+            ) {
+
+                closeAccountModal();
+
+            }
+
+        }
+    );
+
+
+    document.body.appendChild(
+        accountModal
+    );
+}
+
+
+function closeAccountModal() {
+
+    const modal =
+        document.getElementById(
+            "accountModal"
+        );
+
+
+    if (modal) {
+
+        modal.remove();
+
+    }
+}
+
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "ai_newsletter_email"
+    );
+
+
+    updateSignInButton();
+
+    closeAccountModal();
+}
+
+
+function updateSignInButton() {
+
+    const button =
+        document.getElementById(
+            "signInButton"
+        );
+
+
+    if (!button) return;
+
+
+    const email =
+        localStorage.getItem(
+            "ai_newsletter_email"
+        );
+
+
+    if (email) {
+
+        button.textContent =
+            "Account";
+
+        button.setAttribute(
+            "aria-label",
+            "Open account"
+        );
+
+    } else {
+
+        button.textContent =
+            "Sign In";
+
+        button.setAttribute(
+            "aria-label",
+            "Sign in"
+        );
+    }
+}
+
+
+function closeSignIn() {
+
+    document
+        .getElementById(
+            "signInModal"
+        )
+        .classList.remove(
+            "modal-visible"
+        );
+
+}
+
+
+
+function closeSignInOutside(event) {
+
+    if (
+        event.target.id ===
+        "signInModal"
+    ) {
+
+        closeSignIn();
+
+    }
+
+}
+
+
+async function signInUser(event) {
+
+    event.preventDefault();
+
+    const input =
+        document.getElementById("signInEmail");
+
+    const message =
+        document.getElementById("signInMessage");
+
+    const email =
+        input.value.trim().toLowerCase();
+
+
+    if (!email) {
+
+        message.textContent =
+            "Please enter your email address.";
+
+        message.className =
+            "signin-message error-message";
+
+        return;
+    }
+
+
+    message.textContent =
+        "Checking your subscription...";
+
+    message.className =
+        "signin-message";
+
+
+    try {
+
+        const response = await fetch(
+            "/api/check-subscriber",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    email: email
+                })
             }
         );
 
-    </script>
 
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                result.detail ||
+                "Unable to verify your email."
+            );
+        }
+
+
+        // Active subscriber
+        if (
+            result.registered === true &&
+            result.active === true
+        ) {
+
+            localStorage.setItem(
+                "ai_newsletter_email",
+                email
+            );
+
+            updateSignInButton();
+
+            message.textContent =
+                "✓ Sign in successful. Welcome back!";
+
+            message.className =
+                "signin-message signin-success";
+
+
+            setTimeout(() => {
+                closeSignIn();
+            }, 1500);
+
+            return;
+        }
+
+
+        // Registered but unsubscribed
+        if (
+            result.registered === true &&
+            result.active === false
+        ) {
+
+            message.textContent =
+                "This email is unsubscribed. Please subscribe again.";
+
+            message.className =
+                "signin-message error-message";
+
+            return;
+        }
+
+
+        // Not registered
+        if (
+            result.registered === false
+        ) {
+
+            message.textContent =
+                "This email is not registered. Please subscribe first.";
+
+            message.className =
+                "signin-message error-message";
+
+            return;
+        }
+
+
+        message.textContent =
+            "Unable to verify this email.";
+
+        message.className =
+            "signin-message error-message";
+
+
+    } catch (error) {
+
+        console.error(
+            "Sign in error:",
+            error
+        );
+
+        message.textContent =
+            "Unable to verify your email. Please try again.";
+
+        message.className =
+            "signin-message error-message";
+    }
+}
+
+/* =====================================================
+   SUBSCRIBE SCROLL
+===================================================== */
+
+function scrollToSubscribe() {
+
+    const element =
+        document.getElementById(
+            "subscribe"
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    element.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+function toggleMobileMenu() {
+
+    document
+        .getElementById(
+            "mobileMenu"
+        )
+        .classList.toggle(
+            "mobile-menu-open"
+        );
+
+}
+
+
+function closeMobileMenu() {
+
+    document
+        .getElementById(
+            "mobileMenu"
+        )
+        .classList.remove(
+            "mobile-menu-open"
+        );
+
+}
+
+
+
+/* =====================================================
+   DATE FORMAT
+===================================================== */
+
+function formatDate(value) {
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    try {
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return String(value);
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-IN",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    } catch {
+
+        return String(value);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   URL SECURITY
+===================================================== */
+
+function safeUrl(value) {
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    const url =
+        String(value).trim();
+
+
+    if (
+        !/^https?:\/\//i.test(url)
+    ) {
+
+        return "";
+
+    }
+
+
+    return escapeHtml(url);
+
+}
+
+
+
+function safeImage(value) {
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    const url =
+        String(value).trim();
+
+
+    if (
+        !/^https?:\/\//i.test(url)
+    ) {
+
+        return "";
+
+    }
+
+
+    return escapeHtml(url);
+
+}
+
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeSignIn();
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadNewsletter();
+        updateSignInButton();
+
+    }
+);
+
+</script>
 </body>
 
 </html>

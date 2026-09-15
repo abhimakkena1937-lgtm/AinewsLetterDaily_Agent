@@ -62,6 +62,11 @@ async def writer_node(
         []
     )
 
+    tool_of_the_day = state.get(
+        "tool_of_the_day",
+        None
+    )
+
     image_results = state.get(
         "image_results",
         []
@@ -109,6 +114,11 @@ async def writer_node(
     )
 
     print(
+        "TOOL OF THE DAY:",
+        tool_of_the_day
+    )
+
+    print(
         "IMAGE RESULTS:",
         len(image_results)
     )
@@ -123,6 +133,7 @@ async def writer_node(
         "tweets": tweets,
         "github_repos": github_repos,
         "papers": papers,
+        "tool_of_the_day": tool_of_the_day,
     }
 
     # -----------------------------------------------------
@@ -173,6 +184,7 @@ async def writer_node(
         )
 
     # Make sure the result is a string
+
     if not isinstance(
         newsletter,
         str

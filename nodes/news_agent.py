@@ -12,7 +12,7 @@ from prompts import (
     NEWS_EXTRACTION_USER_PROMPT,
 )
 
-from schemas import AllResearchItems
+from schemas import AllResearchItems, ToolOfTheDay
 from state import NewsLetterState
 
 from tools.web_search import format_research, tavily_search
@@ -72,21 +72,6 @@ PAPER_QUERIES = [
 # =========================================================
 # EXA CONCURRENCY CONTROL
 # =========================================================
-#
-# We still perform all searches.
-#
-# This only controls how many requests are sent to Exa
-# simultaneously.
-#
-# This does NOT limit:
-# - number of news items
-# - number of startups
-# - number of people
-# - number of GitHub repos
-# - number of papers
-#
-# It only protects Exa from a burst of simultaneous requests.
-#
 
 exa_semaphore = asyncio.Semaphore(3)
 
@@ -157,11 +142,6 @@ async def research_query(
             # -------------------------------------------------
             # Exponential backoff
             # -------------------------------------------------
-            #
-            # Attempt 1 -> wait 2 sec
-            # Attempt 2 -> wait 4 sec
-            # Attempt 3 -> wait 8 sec
-            #
 
             delay = 2 ** (attempt + 1)
 
@@ -413,6 +393,20 @@ def get_news_llm():
 
 
 # =========================================================
+# TOOL OF THE DAY GEMINI
+# =========================================================
+
+def get_tool_llm():
+
+    return ChatGoogleGenerativeAI(
+        model=GEMINI_MODEL,
+        temperature=0.2,
+    ).with_structured_output(
+        ToolOfTheDay
+    )
+
+
+# =========================================================
 # FORMAT CATEGORY
 # =========================================================
 
@@ -432,6 +426,132 @@ def format_category(
         f"\n\n===== {category.upper()} =====\n"
         + format_research(results)
     )
+
+
+# =========================================================
+# TOOL OF THE DAY
+# =========================================================
+
+async def generate_tool_of_the_day(
+    research: dict,
+    time_window: str,
+) -> ToolOfTheDay | None:
+
+    print("\n" + "#" * 80)
+    print("GENERATING TOOL OF THE DAY")
+    print("#" * 80)
+
+    # -----------------------------------------------------
+    # Use current research as the source
+    # -----------------------------------------------------
+
+    tool_research = ""
+
+    tool_research += format_category(
+        "AI NEWS",
+        research.get("news", []),
+    )
+
+    tool_research += format_category(
+        "AI STARTUPS",
+        research.get("startups", []),
+    )
+
+    tool_research += format_category(
+        "AI GITHUB",
+        research.get("github", []),
+    )
+
+    # -----------------------------------------------------
+    # Tool selection prompt
+    # -----------------------------------------------------
+
+    system_prompt = """
+You are the Tool of the Day selector for an AI newsletter.
+
+Select ONE genuinely useful AI tool, platform, library,
+developer product, or AI application.
+
+Rules:
+
+1. Select only a real tool.
+2. Prefer tools that are relevant to current AI developments.
+3. Prefer tools that developers, researchers, founders,
+   or AI users can actually explore.
+4. Do not invent a tool.
+5. Do not invent URLs.
+6. Use information from the supplied research.
+7. The tool should be different from ordinary news reporting.
+8. Return exactly one ToolOfTheDay object.
+9. Keep the description concise and useful.
+10. If a reliable URL is available in the research, use it.
+11. If no reliable URL is available, return null for the URL.
+12. Do not use a random or unrelated website.
+"""
+
+    user_prompt = f"""
+Select the best Tool of the Day from the research below.
+
+TIME WINDOW:
+{time_window}
+
+RESEARCH:
+{tool_research}
+
+Return one useful AI tool.
+"""
+
+    try:
+
+        llm = get_tool_llm()
+
+        async with gemini_semaphore:
+
+            response = await llm.ainvoke(
+                [
+                    SystemMessage(
+                        content=system_prompt
+                    ),
+
+                    HumanMessage(
+                        content=user_prompt
+                    ),
+                ]
+            )
+
+        print(
+            "\nTOOL OF THE DAY SELECTED:"
+        )
+
+        print(
+            "NAME:",
+            response.name
+        )
+
+        print(
+            "DESCRIPTION:",
+            response.description
+        )
+
+        print(
+            "URL:",
+            response.url
+        )
+
+        return response
+
+    except Exception as e:
+
+        print(
+            "\nTOOL OF THE DAY GENERATION FAILED"
+        )
+
+        print(
+            "ERROR:",
+            str(e)
+        )
+
+        return None
 
 
 # =========================================================
@@ -579,6 +699,10 @@ async def extract_all_research(
         len(response.papers),
     )
 
+    # =====================================================
+    # RETURN
+    # =====================================================
+
     return {
         "news": response.news,
         "startups": response.startups,
@@ -605,18 +729,144 @@ async def news_agent_node(
         "",
     )
 
-    research = await extract_all_research(
+    # =====================================================
+    # COLLECT + EXTRACT RESEARCH
+    # =====================================================
+
+    research = await collect_all_research(
         time_window=time_window
     )
 
+    # =====================================================
+    # EXTRACT STRUCTURED NEWSLETTER ITEMS
+    # =====================================================
+
+    # Format all research
+    research_text = ""
+
+    research_text += format_category(
+        "AI NEWS",
+        research["news"],
+    )
+
+    research_text += format_category(
+        "AI STARTUPS",
+        research["startups"],
+    )
+
+    research_text += format_category(
+        "AI PEOPLE / POSTS",
+        research["people"],
+    )
+
+    research_text += format_category(
+        "AI GITHUB",
+        research["github"],
+    )
+
+    research_text += format_category(
+        "AI RESEARCH PAPERS",
+        research["papers"],
+    )
+
+    print("\n" + "#" * 80)
+    print("RESEARCH SENT TO GEMINI")
+    print("#" * 80)
+
+    print(
+        "Formatted research characters:",
+        len(research_text),
+    )
+
+    llm = get_news_llm()
+
+    async with gemini_semaphore:
+
+        response = await llm.ainvoke(
+            [
+                SystemMessage(
+                    content=NEWS_EXTRACTION_SYSTEM_PROMPT
+                ),
+
+                HumanMessage(
+                    content=NEWS_EXTRACTION_USER_PROMPT.format(
+                        research_results=research_text,
+                        time_window=time_window,
+                    )
+                ),
+            ]
+        )
+
+    # =====================================================
+    # GENERATE TOOL OF THE DAY
+    # =====================================================
+
+    tool_of_the_day = await generate_tool_of_the_day(
+        research=research,
+        time_window=time_window,
+    )
+
+    # =====================================================
+    # RESULTS
+    # =====================================================
+
+    print("\n" + "#" * 80)
+    print("GEMINI EXTRACTION RESULTS")
+    print("#" * 80)
+
+    print(
+        "NEWS:",
+        len(response.news),
+    )
+
+    print(
+        "STARTUPS:",
+        len(response.startups),
+    )
+
+    print(
+        "PEOPLE:",
+        len(response.tweets),
+    )
+
+    print(
+        "GITHUB:",
+        len(response.repositories),
+    )
+
+    print(
+        "PAPERS:",
+        len(response.papers),
+    )
+
+    print(
+        "TOOL OF THE DAY:",
+        (
+            tool_of_the_day.name
+            if tool_of_the_day
+            else "None"
+        ),
+    )
+
+    # =====================================================
+    # RETURN STATE UPDATE
+    # =====================================================
+
     return {
-        "news": research["news"],
-        "startups": research["startups"],
-        "tweets": research["tweets"],
-        "github_repos": research["github_repos"],
-        "research_papers": research["research_papers"],
+
+        "news": response.news,
+
+        "startups": response.startups,
+
+        "tweets": response.tweets,
+
+        "github_repos": response.repositories,
+
+        "research_papers": response.papers,
+
+        "tool_of_the_day": tool_of_the_day,
 
         "progress": [
-            "news_agent: collected and extracted news, startups, people, GitHub, and papers"
+            "news_agent: collected and extracted news, startups, people, GitHub, papers, and Tool of the Day"
         ],
     }

@@ -9,6 +9,7 @@ from schemas import (
     TweetItem,
     GitHubItem,
     DiscoveredEntity,
+    ToolOfTheDay,
 )
 
 
@@ -59,6 +60,13 @@ class NewsLetterState(
         List[PaperItem],
         operator.add
     ]
+
+
+    # =====================================================
+    # Tool of the Day
+    # =====================================================
+
+    tool_of_the_day: ToolOfTheDay | None
 
 
     # =====================================================
