@@ -67,7 +67,7 @@ jobs:
 
       - name: Publish newsletter to Render
         env:
-          RENDER_NEWSLETTER_URL: https://ai-news-letter-y02i.onrender.com/api/publish-newsletter
+          RENDER_NEWSLETTER_URL: https://ainewsletterdaily.onrender.com/api/publish-newsletter
           NEWSLETTER_PUBLISH_KEY: ${{ secrets.NEWSLETTER_PUBLISH_KEY }}
 
         run: |
