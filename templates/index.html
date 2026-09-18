@@ -24,29 +24,6 @@
 
 
 <style>
-/* Keep all seven topic cards in one horizontal row */
-.topics-grid {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 18px;
-}
-
-@media (max-width: 1200px) {
-    .topics-grid {
-        grid-template-columns: repeat(7, 190px);
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding-bottom: 12px;
-    }
-}
-
-@media (max-width: 768px) {
-    .topics-grid {
-        grid-template-columns: repeat(7, 180px);
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
-}
-
 .account-modal {
     text-align: center;
 }
@@ -729,51 +706,6 @@
 
         </div>
 
-
-
-        <!-- GITHUB -->
-
-        <div
-            class="topic-card"
-            onclick="selectCategory('GitHub')"
-        >
-
-            <div class="topic-image">
-
-                <img
-                    src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=900&q=85"
-                    alt="GitHub AI Repositories"
-                    loading="lazy"
-                >
-
-            </div>
-
-            <div class="topic-content">
-
-                <h3>
-                    GitHub
-                </h3>
-
-                <p>
-                    Discover new AI repositories,
-                    open-source projects and developer tools.
-                </p>
-
-                <div class="topic-footer">
-
-                    <span>
-                        AI GitHub Repositories
-                    </span>
-
-                    <span class="topic-arrow">
-                        →
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
 
 
         <!-- TOOL OF THE DAY -->
@@ -1743,15 +1675,6 @@ function selectCategory(category) {
 
     }
 
-    else if (category === "GitHub") {
-
-        items = (newsletterData.github_repos || []).map(item => ({
-            type: "github",
-            data: item
-        }));
-
-    }
-
     else if (category === "Tech & Products") {
 
         items = filterNewsByCategory([
@@ -2409,6 +2332,76 @@ function createPeopleCard(item) {
    GITHUB
 ===================================================== */
 
+function getGithubPreviewImage(repoUrl) {
+
+    if (!repoUrl) {
+
+        return "";
+
+    }
+
+
+    try {
+
+        const url =
+            new URL(repoUrl);
+
+
+        const parts =
+            url.pathname
+                .split("/")
+                .filter(Boolean);
+
+
+        if (
+            url.hostname
+                .toLowerCase()
+                .includes("github.com")
+            &&
+            parts.length >= 2
+        ) {
+
+            const owner =
+                parts[0];
+
+            const repo =
+                parts[1]
+                    .replace(
+                        /\\.git$/i,
+                        ""
+                    );
+
+
+            if (owner && repo) {
+
+                return safeImage(
+                    `https://opengraph.githubassets.com/1/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`
+                );
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "GitHub preview image error:",
+            error
+        );
+
+    }
+
+
+    return "";
+
+}
+
+
+
+/* =====================================================
+   GITHUB
+===================================================== */
+
 function createGithubCard(item) {
 
     const title =
@@ -2423,7 +2416,26 @@ function createGithubCard(item) {
 
 
     const url =
-        safeUrl(item.url);
+        safeUrl(
+            item.url ||
+            item.html_url ||
+            item.repository_url
+        );
+
+
+    /*
+       Use the Image Agent image first.
+
+       If the Image Agent did not provide an image,
+       automatically use GitHub's Open Graph preview.
+    */
+    const image =
+        safeImage(item.image_url) ||
+        getGithubPreviewImage(
+            item.url ||
+            item.html_url ||
+            item.repository_url
+        );
 
 
     return `
@@ -2432,9 +2444,30 @@ function createGithubCard(item) {
 
             <div class="article-image">
 
-                <div class="article-image-placeholder github-placeholder">
-                    &lt;/&gt;
-                </div>
+                ${
+                    image
+
+                    ?
+
+                    `<img
+                        src="${image}"
+                        alt="${escapeHtml(title)}"
+                        loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+                    <div
+                        class="article-image-placeholder github-placeholder"
+                        style="display:none;"
+                    >
+                        &lt;/&gt;
+                    </div>`
+
+                    :
+
+                    `<div class="article-image-placeholder github-placeholder">
+                        &lt;/&gt;
+                    </div>`
+                }
 
             </div>
 
