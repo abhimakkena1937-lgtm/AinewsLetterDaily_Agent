@@ -24,6 +24,29 @@
 
 
 <style>
+/* Keep all seven topic cards in one horizontal row */
+.topics-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 18px;
+}
+
+@media (max-width: 1200px) {
+    .topics-grid {
+        grid-template-columns: repeat(7, 190px);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .topics-grid {
+        grid-template-columns: repeat(7, 180px);
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+}
+
 .account-modal {
     text-align: center;
 }
@@ -706,6 +729,51 @@
 
         </div>
 
+
+
+        <!-- GITHUB -->
+
+        <div
+            class="topic-card"
+            onclick="selectCategory('GitHub')"
+        >
+
+            <div class="topic-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=900&q=85"
+                    alt="GitHub AI Repositories"
+                    loading="lazy"
+                >
+
+            </div>
+
+            <div class="topic-content">
+
+                <h3>
+                    GitHub
+                </h3>
+
+                <p>
+                    Discover new AI repositories,
+                    open-source projects and developer tools.
+                </p>
+
+                <div class="topic-footer">
+
+                    <span>
+                        AI GitHub Repositories
+                    </span>
+
+                    <span class="topic-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
         <!-- TOOL OF THE DAY -->
@@ -1670,6 +1738,15 @@ function selectCategory(category) {
 
         items = (newsletterData.research_papers || []).map(item => ({
             type: "research",
+            data: item
+        }));
+
+    }
+
+    else if (category === "GitHub") {
+
+        items = (newsletterData.github_repos || []).map(item => ({
+            type: "github",
             data: item
         }));
 

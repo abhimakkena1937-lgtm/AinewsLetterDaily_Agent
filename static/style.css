@@ -1313,16 +1313,17 @@ a {
     display: grid;
 
     grid-template-columns:
-        repeat(
-            6,
-            minmax(0,1fr)
-        );
+        repeat(7, minmax(0, 1fr));
 
     gap: 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 12px;
 }
 
 
 .topic-card {
+    min-width: 0;
     overflow: hidden;
 
     border:
@@ -2561,7 +2562,9 @@ a {
 
     .topics-grid {
         grid-template-columns:
-            repeat(3,1fr);
+            repeat(7, 180px);
+        overflow-x: auto;
+        overflow-y: hidden;
     }
 
 }
@@ -2729,12 +2732,15 @@ a {
 
 
     .topics-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            repeat(7, 180px);
+        overflow-x: auto;
+        overflow-y: hidden;
     }
 
 
     .topic-image {
-        height: 210px;
+        height: 180px;
     }
 
 
