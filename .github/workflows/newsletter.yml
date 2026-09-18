@@ -2,8 +2,10 @@ name: AI Daily Newsletter
 
 on:
   schedule:
+    # 10:00 PM IST = 4:30 PM UTC
     - cron: "30 16 * * *"
 
+  # Allows you to manually run the newsletter from GitHub
   workflow_dispatch:
 
 jobs:
@@ -12,19 +14,55 @@ jobs:
 
     steps:
 
+      # =====================================================
+      # SHOW EXECUTION TIME
+      # =====================================================
+
+      - name: Show execution time
+        run: |
+          echo "========================================"
+          echo "WORKFLOW EXECUTION TIME"
+          echo "========================================"
+          echo "UTC time:"
+          date -u
+          echo ""
+          echo "IST time:"
+          TZ=Asia/Kolkata date
+          echo "========================================"
+
+      # =====================================================
+      # CHECKOUT
+      # =====================================================
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # =====================================================
+      # INSTALL UV
+      # =====================================================
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
           version: "latest"
 
+      # =====================================================
+      # PYTHON
+      # =====================================================
+
       - name: Set up Python
         run: uv python install 3.13
 
+      # =====================================================
+      # DEPENDENCIES
+      # =====================================================
+
       - name: Install dependencies
         run: uv sync
+
+      # =====================================================
+      # RUN NEWSLETTER
+      # =====================================================
 
       - name: Run newsletter
         env:
@@ -32,7 +70,32 @@ jobs:
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           GOOGLE_APPS_SCRIPT_URL: ${{ secrets.GOOGLE_APPS_SCRIPT_URL }}
 
-        run: uv run python daily_runner.py
+        run: |
+          echo "========================================"
+          echo "NEWSLETTER START TIME"
+          echo "========================================"
+          echo "UTC:"
+          date -u
+          echo ""
+          echo "IST:"
+          TZ=Asia/Kolkata date
+          echo "========================================"
+
+          uv run python daily_runner.py
+
+          echo "========================================"
+          echo "NEWSLETTER END TIME"
+          echo "========================================"
+          echo "UTC:"
+          date -u
+          echo ""
+          echo "IST:"
+          TZ=Asia/Kolkata date
+          echo "========================================"
+
+      # =====================================================
+      # PUBLISH NEWSLETTER TO RENDER
+      # =====================================================
 
       - name: Publish newsletter to Render
         env:
@@ -45,6 +108,13 @@ jobs:
           import os
           from pathlib import Path
           import requests
+
+          print("========================================")
+          print("PUBLISH START TIME")
+          print("========================================")
+          os.system("date -u")
+          os.system("TZ=Asia/Kolkata date")
+          print("========================================")
 
           newsletter_file = Path("output/newsletter.json")
 
@@ -91,4 +161,11 @@ jobs:
           print(
               "Newsletter successfully published to Render."
           )
+
+          print("========================================")
+          print("PUBLISH END TIME")
+          print("========================================")
+          os.system("date -u")
+          os.system("TZ=Asia/Kolkata date")
+          print("========================================")
           PY
