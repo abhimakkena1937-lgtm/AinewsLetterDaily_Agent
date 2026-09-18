@@ -1,107 +1,172 @@
-AI NewsLetter Daily Agent
+# AI NewsLetter Daily Agent
 
 An automated AI newsletter platform that researches the latest AI developments, generates a structured daily newsletter, publishes it to a web application, and delivers it to subscribers by email.
 
-The project combines LangGraph, Google Gemini, Exa, FastAPI, PostgreSQL/Supabase, Google Apps Script, Google Sheets, Gmail, GitHub Actions, and a web frontend into one automated workflow.
+The project combines **Python, LangGraph, LangChain, Google Gemini, Exa, FastAPI, PostgreSQL/Supabase, Google Sheets, Google Apps Script, Gmail, GitHub Actions, Render, HTML, CSS, and JavaScript** into one automated workflow.
 
-🚀 Features
+---
 
-📰 Daily AI News
+## 🚀 Features
 
-Latest AI and machine learning news
+### 📰 AI News
 
-Research performed through Exa
+- Latest AI and machine learning news
+- Automated web research using Exa
+- Time-window based research
+- Structured news extraction using Gemini
+- Source URLs preserved
 
-Time-window based research
+### 🚀 Startup & Funding
 
-🚀 Startup & Funding Updates
+- AI startup discovery
+- Funding information
+- Product launches
+- Company developments
+- Startup URLs and source information
 
-AI startup discoveries
+### 👤 AI People
 
-Funding and company-development information
+- AI leaders
+- Researchers
+- Builders
+- Important AI-related people and posts
 
-👤 AI People
+### 💻 GitHub Repositories
 
-Important AI-related people and posts
+- New AI and machine learning repositories
+- Repository name
+- Description
+- Programming language
+- GitHub stars
+- Repository URL
+- Repository images
+- GitHub image fallback when the Image Agent does not provide an image
 
-💻 GitHub Repositories
+GitHub image priority:
 
-Newly discovered AI repositories
+```text
+Image Agent image
+       ↓
+GitHub Open Graph preview
+       ↓
+GitHub placeholder
+```
 
-Repository name, description, language, stars, and URL
+### 📄 Research Papers
 
-GitHub image preview fallback when an Image Agent image is unavailable
+- Newly discovered AI research
+- Paper title
+- Summary
+- Authors
+- Source
+- URL
 
-📄 Research Papers
+### 🛠️ Tool of the Day
 
-Newly discovered AI research
+The newsletter includes one useful AI-related tool, platform, library, or product discovered from the researched content.
 
-Paper title, summary, source, and URL
+Example:
 
-🛠️ Tool of the Day
+```json
+{
+  "name": "Tool Name",
+  "description": "Tool description",
+  "url": "https://example.com"
+}
+```
 
-Selects a useful AI tool, platform, library, or product from researched information
+### 🖼️ Image Agent
 
-Uses structured Gemini output
+The Image Agent assigns relevant images to newsletter items.
 
-🖼️ Image Agent
+Supported categories include:
 
-Finds and assigns images to newsletter items
+```text
+News
+Startup
+AI People
+GitHub
+Research
+Tool of the Day
+```
 
-Supports image matching by title and category
+Image matching uses:
 
-GitHub repositories have an additional image fallback
+- Exact title matching
+- Partial title matching
+- Word overlap
+- Category matching
 
-🧠 LangGraph Workflow
+### 🧠 LangGraph Workflow
 
+Current workflow:
+
+```text
 Planner
-
+   ↓
 Combined News Agent
-
+   ↓
 Image Agent
-
+   ↓
 Writer
-
+   ↓
 Exporter
-
+   ↓
 Gmail Agent
+```
 
-📧 Automated Email Delivery
+### 📧 Automated Email Delivery
 
-Sends the generated newsletter to subscribers
+- Automated email delivery
+- Google Sheets subscriber storage
+- Google Apps Script subscriber API
+- Gmail-based newsletter delivery
+- Subscribe
+- Unsubscribe
+- Subscriber status checking
 
-Subscriber management through Google Sheets + Apps Script
+### 🌐 Web Application
 
-🌐 Web Application
+The frontend includes:
 
-AI NewsLetter website
+- Home
+- Categories
+- Newsletter
+- About
+- Search
+- Subscribe
+- Sign In UI
+- AI & ML topic
+- Startup topic
+- Tech & Products topic
+- GitHub topic
+- Tool of the Day topic
+- Research topic
+- AI People topic
 
-Category pages
+The Explore Topics cards are displayed in a single horizontal row on desktop and can scroll horizontally on smaller screens.
 
-Newsletter view
+### 💾 Persistent Newsletter Storage
 
-Search
+Newsletter data is stored using:
 
-GitHub repository cards
+```text
+PostgreSQL
+     ↓
+Supabase
+```
 
-Tool of the Day section
+This prevents newsletter data from depending on Render's local filesystem.
 
-Subscribe functionality
+### ⏰ Daily Automation
 
-💾 Persistent Newsletter Storage
+GitHub Actions runs the newsletter generation workflow automatically.
 
-PostgreSQL database hosted through Supabase
+---
 
-Render's ephemeral filesystem is not used for permanent newsletter storage
+# 🏗️ System Architecture
 
-⏰ Daily Automation
-
-GitHub Actions runs the newsletter workflow daily
-
-The generated newsletter is published to the Render API
-
-🏗️ Architecture
-
+```text
                          ┌─────────────────────┐
                          │   GitHub Actions    │
                          │   Daily Scheduler   │
@@ -131,7 +196,7 @@ The generated newsletter is published to the Render API
                                    │
                                    ▼
                               ┌─────────┐
-                              │ Writer  │
+                              │  Writer │
                               └────┬────┘
                                    │
                                    ▼
@@ -139,30 +204,29 @@ The generated newsletter is published to the Render API
                              │ Exporter │
                              └────┬─────┘
                                   │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-                    ▼                           ▼
-             newsletter.json              PostgreSQL
-                    │                     / Supabase
-                    │                           │
-                    ▼                           │
-          Render Publish API ◄──────────────────┘
-                    │
-                    ▼
-             Website Frontend
-                    │
-                    ▼
-             ┌───────────────┐
-             │ Gmail Agent   │
-             └───────┬───────┘
-                     │
-                     ▼
-                Subscribers
+                 ┌────────────────┴────────────────┐
+                 │                                 │
+                 ▼                                 ▼
+        newsletter.json                       Render API
+                 │                                 │
+                 │                                 ▼
+                 │                           Supabase
+                 │                           PostgreSQL
+                 │                                 │
+                 ▼                                 ▼
+          Gmail Agent                         Website
+                 │
+                 ▼
+            Subscribers
+```
 
-🔄 LangGraph Workflow
+---
 
-The current graph is:
+# 🔄 LangGraph Workflow
 
+The graph currently contains:
+
+```text
 START
   │
   ▼
@@ -185,133 +249,186 @@ Gmail Agent
   │
   ▼
 END
+```
 
-There is no Reducer node in the current workflow.
+There is no Reducer node in the current graph.
 
-🧩 Main Components
+---
 
-1. Planner
+# 🧩 Components
 
-The Planner determines:
+## 1. Planner
 
-Current date
+The Planner prepares the research process.
 
-Research time window
+It determines:
 
-Topics/queries required for the newsletter
+- Current date
+- Research time window
+- Research topics
+- Search queries
 
-The resulting time window is passed to the research agents.
+Example:
 
-2. Combined News Agent
+```text
+Current time
+     ↓
+Determine time window
+     ↓
+Create research queries
+```
 
-The Combined News Agent performs research using Exa.
+The resulting time window is passed to the research agent.
 
-It collects information for:
+---
 
-AI news
+# 2. Combined News Agent
 
+The Combined News Agent performs research using **Exa**.
+
+It searches for:
+
+```text
+AI News
 Startups
-
-AI people
-
+AI People
 GitHub repositories
+Research Papers
+```
 
-Research papers
+The agent performs:
 
-The agent:
+- Concurrent research
+- Exa searching
+- Retry handling
+- Result collection
+- Deduplication
+- Structured extraction using Gemini
+- Tool of the Day generation
 
-Runs multiple research queries
+---
 
-Uses concurrent Exa requests
-
-Uses a semaphore to control concurrent requests
-
-Retries failed Exa requests
-
-Deduplicates research results
-
-Uses Gemini structured output to create structured newsletter data
-
-Exa concurrency
+## Exa Request Concurrency
 
 The project uses:
 
+```python
 exa_semaphore = asyncio.Semaphore(3)
+```
 
-This controls simultaneous Exa requests without limiting the number of final newsletter items.
+This controls the number of simultaneous Exa requests.
 
-🖼️ Image Agent
+It does not limit the total number of newsletter items.
 
-The Image Agent generates image assignments for newsletter content.
+---
 
-Images are matched against newsletter items using:
+## Retry Handling
 
-Exact title matching
+Research requests use retry logic with exponential backoff.
 
-Partial title matching
+Example:
 
-Word overlap
+```text
+Attempt 1
+   ↓
+Wait 2 seconds
 
-Category matching
+Attempt 2
+   ↓
+Wait 4 seconds
 
-The exporter supports image fields such as:
+Attempt 3
+   ↓
+Wait 8 seconds
+```
 
+This helps handle temporary Exa/network failures.
+
+---
+
+# 3. Image Agent
+
+The Image Agent produces image assignments for newsletter content.
+
+The exporter supports image values such as:
+
+```text
 image_url
 url
 image
 src
+```
 
-For GitHub repositories, the frontend additionally falls back to the GitHub Open Graph preview when no Image Agent image is available.
+Images are matched against newsletter items using normalized titles.
+
+The matching process supports:
+
+```text
+Exact title
+      ↓
+Partial title
+      ↓
+Word overlap
+      ↓
+Category preference
+```
+
+For GitHub repositories, the website also supports a GitHub Open Graph preview fallback.
 
 Example:
 
+```text
 https://opengraph.githubassets.com/1/OWNER/REPOSITORY
+```
 
-Image priority for GitHub cards:
+---
 
-Image Agent image
-        ↓
-GitHub Open Graph preview
-        ↓
-GitHub placeholder
+# 4. Writer
 
-✍️ Writer
+The Writer converts structured research results into the final newsletter.
 
-The Writer converts structured research information into the final newsletter.
+Current newsletter structure:
 
-Current newsletter sections:
-
+```text
 AI Daily
 
 📰 AI News
+
 🚀 Startup & Funding
+
 👤 AI People
+
 💻 New GitHub Repositories
+
 📄 New Research Papers
+
 🛠️ Tool of the Day
+```
 
 The Writer is instructed to:
 
-Use supplied research only
+- Use supplied information
+- Preserve URLs
+- Preserve image URLs
+- Avoid inventing content
+- Generate the newsletter from structured data
 
-Preserve URLs
+---
 
-Preserve image URLs
+# 5. Exporter
 
-Avoid inventing information
+The Exporter generates:
 
-Generate the newsletter from structured data
-
-📦 Exporter
-
-The Exporter creates:
-
-output/ai_daily.md
-output/ai_daily.html
-output/newsletter.json
+```text
+output/
+├── ai_daily.md
+├── ai_daily.html
+└── newsletter.json
+```
 
 The JSON structure contains:
 
+```json
 {
   "date": "...",
   "time_window": "...",
@@ -324,136 +441,151 @@ The JSON structure contains:
   "discovered_entities": [],
   "tool_of_the_day": {}
 }
+```
 
-The exporter also attaches Image Agent results to the structured newsletter items.
+The exporter also attaches images to structured newsletter items.
 
-📧 Gmail Agent
+---
 
-The Gmail Agent sends the generated newsletter to subscribed users.
+# 6. Gmail Agent
 
-The current workflow:
+The Gmail Agent sends the generated newsletter to subscribers.
 
+The subscriber flow is:
+
+```text
 Google Sheets
-      │
-      ▼
+      ↓
 Google Apps Script
-      │
-      ▼
+      ↓
 Subscriber API
-      │
-      ▼
+      ↓
 Gmail Agent
-      │
-      ▼
+      ↓
 Subscribers
+```
 
-The project supports:
+Supported actions:
 
-Subscribe
-
-Unsubscribe
-
-Subscriber status checking
-
-👥 Subscriber Management
-
-Subscriber information is managed using:
-
-Google Sheets
-
-Google Apps Script
-
-The Python application communicates with the Apps Script endpoint.
-
-Example operations:
-
+```text
 subscribe
 unsubscribe
 check_subscriber
+```
 
-The Apps Script URL is stored as an environment variable.
+---
 
-💾 Database
+# 👥 Subscriber Management
 
-The project uses PostgreSQL through Supabase for persistent newsletter storage.
+Subscriber information is managed through:
 
-Table:
+```text
+Google Sheets
++
+Google Apps Script
+```
 
+The Python application communicates with the Apps Script endpoint.
+
+Example:
+
+```json
+{
+  "action": "subscribe",
+  "email": "user@example.com"
+}
+```
+
+---
+
+# 💾 Database
+
+The application uses PostgreSQL hosted through Supabase.
+
+## Database Table
+
+```sql
 create table newsletters (
     id bigint generated by default as identity primary key,
     data jsonb not null,
     created_at timestamptz default now()
 );
+```
 
+## Index
+
+```sql
 create index newsletters_created_at_idx
 on newsletters (created_at desc);
+```
 
-Newsletter data is stored in the data JSONB column.
+Newsletter data is stored in the:
+
+```text
+data
+```
+
+JSONB column.
 
 The latest newsletter is loaded using:
 
+```sql
 SELECT data
 FROM newsletters
 ORDER BY created_at DESC, id DESC
 LIMIT 1;
+```
 
-Why PostgreSQL?
+---
 
-The Render web service filesystem is ephemeral. Therefore, generated newsletter data should not depend on local files for permanent storage.
+# 🌐 FastAPI Backend
 
-🌐 Backend API
+FastAPI provides the backend API.
 
-The application uses FastAPI.
+Important endpoints:
 
-Important API endpoints include:
-
-/api/publish-newsletter
+```text
 /api/newsletter
+/api/publish-newsletter
+```
 
-The publish endpoint receives the generated newsletter from GitHub Actions.
+## Newsletter API
 
-Publishing is protected using:
+```text
+GET /api/newsletter
+```
 
+Returns the latest newsletter.
+
+## Publish API
+
+```text
+POST /api/publish-newsletter
+```
+
+GitHub Actions sends the generated newsletter to this endpoint.
+
+The publish request is protected using:
+
+```text
 X-Newsletter-Key
+```
 
-The secret is stored in environment variables rather than source code.
+---
 
-🖥️ Frontend
+# 🖥️ Frontend
 
-The frontend provides:
+The frontend is built using:
 
-Home page
+```text
+HTML
+CSS
+JavaScript
+```
 
-Categories
+The Explore Topics section includes:
 
-Newsletter
-
-About
-
-Search
-
-Subscribe
-
-Sign In UI
-
-Topic cards
-
-Article cards
-
-GitHub repository cards
-
-Research cards
-
-Startup cards
-
-AI People cards
-
-Tool of the Day
-
-Explore Topics
-
-The topic cards include:
-
+```text
 AI & ML
 Startups
 Tech & Products
@@ -461,73 +593,94 @@ GitHub
 Tool of the Day
 Research
 AI People
+```
 
-The cards are displayed in a single horizontal row on desktop.
+The topic cards appear in a single horizontal row on desktop.
 
 On smaller screens, horizontal scrolling is enabled.
 
-💻 GitHub Repository Cards
+---
 
-Each GitHub repository can display:
+# 💻 GitHub Repository Cards
 
+GitHub cards display:
+
+```text
 Repository name
-
 Description
-
 Language
-
 Stars
-
 Repository URL
-
 Image
+```
 
-Example card information:
+Example:
 
-GitHub
+```text
+┌───────────────────────────────┐
+│                               │
+│      GitHub Repository        │
+│                               │
+├───────────────────────────────┤
+│ GitHub                        │
+│                               │
+│ repository-name               │
+│ Repository description...     │
+│                               │
+│ Python          ★ 120         │
+│                               │
+│ View Repository →             │
+└───────────────────────────────┘
+```
 
-Repository Name
+GitHub image handling:
 
-Repository description...
+```text
+Image Agent image
+       ↓
+GitHub Open Graph preview
+       ↓
+GitHub placeholder
+```
 
-Language
+Fallback URL format:
 
-★ Stars
+```text
+https://opengraph.githubassets.com/1/OWNER/REPOSITORY
+```
 
-View Repository →
+---
 
-If an Image Agent image is unavailable, the frontend derives a GitHub preview image from the repository URL.
-
-🛠️ Tool of the Day
+# 🛠️ Tool of the Day
 
 The Tool of the Day feature uses Gemini structured output.
 
-It selects one useful real-world AI:
+It selects a useful AI-related:
 
+```text
 Tool
-
 Platform
-
 Library
-
 Product
+```
 
-The selection is based on information already discovered by the research workflow.
+The tool is selected from information discovered during the research process.
 
-The newsletter stores:
+Example:
 
+```json
 {
-  "tool_of_the_day": {
-    "name": "...",
-    "description": "...",
-    "url": "..."
-  }
+  "name": "Example AI Tool",
+  "description": "Useful AI tool for developers.",
+  "url": "https://example.com"
 }
+```
 
-📁 Project Structure
+---
 
-A simplified project structure:
+# 📁 Project Structure
 
+```text
 Ai_news_letter/
 │
 ├── .github/
@@ -556,392 +709,470 @@ Ai_news_letter/
 ├── api_google.py
 ├── config.py
 ├── daily_runner.py
-├── graph.py
+├── exa_utils.py
 ├── google_sheets_api.py
 ├── newsletter_data.py
+├── graph.py
 ├── schemas.py
 ├── state.py
-├── exa_utils.py
+│
 ├── pyproject.toml
 ├── uv.lock
 ├── .gitignore
 └── README.md
+```
 
-⚙️ Requirements
+---
 
-The project currently targets:
+# ⚙️ Requirements
 
+The project uses:
+
+```text
 Python >= 3.13,<3.14
+```
 
-Main dependencies include:
+Main libraries:
 
+```text
 LangGraph
-
 LangChain
-
 Google Gemini
-
 Exa
-
 FastAPI
-
 PostgreSQL
-
 psycopg
-
 Pydantic
-
 Uvicorn
-
 Requests
-
 BeautifulSoup
-
 Markdown
-
 python-dotenv
-
 APScheduler
+```
 
-🔑 Environment Variables
+---
 
-Create a local .env file:
+# 🔑 Environment Variables
 
+Create a local `.env` file:
+
+```env
 GEMINI_API_KEY=your_gemini_api_key
 EXA_API_KEY=your_exa_api_key
 GOOGLE_APPS_SCRIPT_URL=your_google_apps_script_url
 NEWSLETTER_PUBLISH_KEY=your_publish_key
 DATABASE_URL=your_postgresql_connection_string
+```
 
-Do not commit .env to GitHub.
+Never commit `.env` to GitHub.
 
-The project .gitignore already excludes environment files.
+---
 
-🧪 Local Setup
+# 🔒 Security
 
-1. Clone the repository
+Never commit:
 
+```text
+.env
+API keys
+Database passwords
+Private tokens
+Google credentials
+Newsletter publish keys
+```
+
+The `.gitignore` contains:
+
+```gitignore
+.env
+.env.*
+```
+
+If a secret is accidentally exposed, rotate the secret immediately.
+
+---
+
+# 🧪 Local Installation
+
+## Clone the repository
+
+```bash
 git clone https://github.com/abhimakkena1937-lgtm/AinewsLetterDaily_Agent.git
 cd AinewsLetterDaily_Agent
+```
 
-2. Install uv
+---
 
-Install uv if it is not already available.
+## Install dependencies
 
-Then install the project dependencies:
+Using `uv`:
 
+```bash
 uv sync
+```
 
-3. Configure environment variables
+---
+
+## Configure environment
 
 Create:
 
+```text
 .env
+```
 
-and add the required API keys and configuration.
+and add the required variables.
 
-4. Run the newsletter locally
+---
 
+## Run the newsletter locally
+
+```bash
 uv run python daily_runner.py
+```
 
-The generated files will appear in:
+Generated files:
 
+```text
 output/
+```
 
-🌐 Running FastAPI
+---
 
-Start the API locally with:
+# 🌐 Run FastAPI Locally
 
+```bash
 uv run uvicorn api_google:app --host 0.0.0.0 --port 8000
+```
 
-Then open:
+Open:
 
+```text
 http://localhost:8000
+```
 
-If the application serves the frontend through the configured routes, use the corresponding application URL.
+---
 
-⏰ GitHub Actions Automation
+# ⏰ GitHub Actions
 
-The newsletter is scheduled through GitHub Actions.
+The newsletter is automatically generated using GitHub Actions.
 
 Current schedule:
 
+```yaml
 on:
   schedule:
     - cron: "30 16 * * *"
 
   workflow_dispatch:
+```
 
-The cron time is:
+This corresponds to:
 
+```text
 16:30 UTC
 22:00 IST
+```
 
-GitHub Actions scheduled workflows can sometimes start later than the scheduled time because GitHub may delay scheduled workflow execution.
+The workflow can also be started manually using:
 
-The workflow can also be manually triggered using:
-
+```text
 workflow_dispatch
+```
 
-🚀 Deployment
+Scheduled GitHub Actions workflows can sometimes start later than the configured schedule.
 
-The web application is deployed on Render.
+---
 
-The production architecture is:
-
-GitHub Actions
-      │
-      │ Generate newsletter
-      ▼
-output/newsletter.json
-      │
-      │ POST /api/publish-newsletter
-      ▼
-Render FastAPI
-      │
-      ▼
-Supabase PostgreSQL
-      │
-      ▼
-Frontend
-
-The Render service should contain the required environment variables.
-
-🔐 GitHub Actions Secrets
+# 🔐 GitHub Actions Secrets
 
 Configure these repository secrets:
 
+```text
 GEMINI_API_KEY
 EXA_API_KEY
 GOOGLE_APPS_SCRIPT_URL
 NEWSLETTER_PUBLISH_KEY
+```
 
-The workflow uses these secrets instead of hard-coding credentials.
+The secrets are accessed inside the workflow without hard-coding credentials.
 
-🔒 Security
+---
 
-Never commit:
+# 🚀 Production Flow
 
-.env
-API keys
-Database passwords
-Private tokens
-Newsletter publish keys
-Google credentials
+The production system follows:
 
-The .gitignore contains:
+```text
+GitHub Actions
+       ↓
+daily_runner.py
+       ↓
+LangGraph
+       ↓
+newsletter.json
+       ↓
+POST /api/publish-newsletter
+       ↓
+Render FastAPI
+       ↓
+Supabase PostgreSQL
+       ↓
+Website
+       ↓
+Gmail Agent
+       ↓
+Subscribers
+```
 
-.env
-.env.*
+---
 
-If a secret is accidentally exposed, rotate/revoke it immediately.
+# 🌍 Deployment
 
-🧰 Troubleshooting
+The web application is deployed using Render.
 
-Exa connection errors
+Production architecture:
 
-Exa requests can fail due to:
+```text
+GitHub Actions
+       ↓
+Render API
+       ↓
+FastAPI
+       ↓
+Supabase PostgreSQL
+       ↓
+Frontend
+```
 
-Network errors
+The frontend retrieves the latest newsletter through:
 
-Rate limits
+```text
+/api/newsletter
+```
 
-Temporary service failures
+---
 
-The project includes retry logic with exponential backoff.
+# 🧰 Troubleshooting
 
-Newsletter not appearing on website
+## Newsletter is not generated
 
 Check:
 
-GitHub Actions completed successfully.
+```text
+GEMINI_API_KEY
+EXA_API_KEY
+```
 
-output/newsletter.json was generated.
+Run:
 
-The publish step returned HTTP 200.
+```bash
+uv run python daily_runner.py
+```
 
-Render environment variables are configured.
+---
 
-Supabase contains the latest newsletter row.
+## Exa request failures
 
-The frontend requests the correct API endpoint.
+Possible causes:
 
-Hard refresh the browser.
+```text
+Temporary network problem
+Exa rate limit
+Invalid Exa API key
+```
 
-GitHub images not appearing
+The project contains retry handling and exponential backoff.
 
-GitHub cards use:
+---
 
-Image Agent image
+## Website does not show the latest newsletter
 
-first.
+Check:
 
-If unavailable, they use:
+```text
+1. GitHub Actions run
+2. newsletter.json generation
+3. Publish API response
+4. Render deployment
+5. Supabase database
+6. /api/newsletter endpoint
+7. Browser cache
+```
 
-GitHub Open Graph preview
+Perform a hard refresh:
 
-and finally:
+```text
+Ctrl + Shift + R
+```
 
-</>
+---
 
-placeholder.
+## GitHub topic card does not appear
 
-If the repository URL is missing or invalid, the GitHub preview cannot be generated.
+Make sure the frontend contains:
 
-📊 Example Newsletter Pipeline
+```javascript
+selectCategory('GitHub')
+```
 
-A typical run looks like:
+and:
 
-Planner
-   ↓
-Research AI news
-   ↓
-Research startups
-   ↓
-Research AI people
-   ↓
-Research GitHub repositories
-   ↓
-Research papers
-   ↓
-Generate Tool of the Day
-   ↓
+```javascript
+else if (category === "GitHub") {
+
+    items = (newsletterData.github_repos || []).map(item => ({
+        type: "github",
+        data: item
+    }));
+
+}
+```
+
+The frontend should also contain:
+
+```javascript
+function createGithubCard(item)
+```
+
+---
+
+## GitHub images do not appear
+
+The frontend first checks:
+
+```javascript
+item.image_url
+```
+
+Then it creates a fallback from the GitHub repository URL:
+
+```text
+https://opengraph.githubassets.com/1/OWNER/REPOSITORY
+```
+
+If no valid GitHub URL exists, the existing GitHub placeholder is displayed.
+
+---
+
+# 📊 Newsletter Data Flow
+
+```text
+Exa Search
+    ↓
+Raw Research
+    ↓
+Gemini Structured Output
+    ↓
+NewsLetterState
+    ↓
 Image Agent
-   ↓
+    ↓
 Writer
-   ↓
+    ↓
 Exporter
-   ↓
+    ↓
 newsletter.json
-   ↓
-Publish to Render
-   ↓
-Save to Supabase
-   ↓
-Gmail Agent
-   ↓
-Subscribers
+```
 
-📌 Design Goals
+---
 
-The project is designed around:
+# 🔄 Newsletter Execution
 
-Automated AI research
+```text
+10:00 PM IST
+     ↓
+GitHub Actions starts
+     ↓
+Planner creates research window
+     ↓
+Exa researches AI information
+     ↓
+Gemini structures content
+     ↓
+Tool of the Day generated
+     ↓
+Image Agent assigns images
+     ↓
+Writer creates newsletter
+     ↓
+Exporter creates JSON/HTML/Markdown
+     ↓
+GitHub Actions publishes JSON
+     ↓
+Render receives newsletter
+     ↓
+Supabase stores newsletter
+     ↓
+Gmail Agent sends newsletter
+     ↓
+Subscribers receive email
+```
 
-Structured information extraction
+---
 
-Agent-based workflows
+# 🧠 Technology Stack
 
-Reliable newsletter generation
+| Technology | Purpose |
+|---|---|
+| Python | Core application |
+| uv | Dependency and environment management |
+| LangGraph | Workflow orchestration |
+| LangChain | LLM framework |
+| Google Gemini | Structured generation |
+| Exa | Web research |
+| FastAPI | Backend API |
+| PostgreSQL | Persistent data storage |
+| Supabase | Hosted PostgreSQL |
+| Google Sheets | Subscriber storage |
+| Google Apps Script | Subscriber API |
+| Gmail | Email delivery |
+| GitHub Actions | Daily scheduling |
+| Render | Deployment |
+| HTML | Frontend structure |
+| CSS | Frontend styling |
+| JavaScript | Frontend logic |
 
-Persistent storage
+---
 
-Automated email delivery
+# 📈 Future Improvements
 
-Web-based content discovery
+Potential future features:
 
-Open-source AI project discovery
+- User authentication
+- Personalized newsletters
+- Topic preferences
+- Newsletter history
+- Historical newsletter search
+- Subscriber dashboard
+- Admin dashboard
+- Analytics
+- Email unsubscribe links
+- More research sources
+- Better image ranking
+- AI-generated summaries
+- Multiple newsletter schedules
+- User-specific content recommendations
 
-🧠 Technologies
+---
 
-Technology
+# 👨‍💻 Author
 
-Purpose
-
-Python
-
-Core application
-
-LangGraph
-
-Agent workflow orchestration
-
-LangChain
-
-LLM integration
-
-Google Gemini
-
-Structured generation and reasoning
-
-Exa
-
-AI web research
-
-FastAPI
-
-Backend API
-
-PostgreSQL
-
-Persistent storage
-
-Supabase
-
-Hosted PostgreSQL
-
-Google Sheets
-
-Subscriber data
-
-Google Apps Script
-
-Subscriber API
-
-Gmail
-
-Newsletter delivery
-
-GitHub Actions
-
-Daily automation
-
-Render
-
-Web/API deployment
-
-HTML/CSS/JavaScript
-
-Frontend
-
-uv
-
-Python environment and dependency management
-
-📈 Future Improvements
-
-Possible future additions:
-
-User authentication
-
-Personalized newsletters
-
-Topic preferences
-
-Email unsubscribe links
-
-Newsletter history
-
-Search across previous newsletters
-
-More AI research sources
-
-Better image ranking
-
-Analytics dashboard
-
-Subscriber analytics
-
-Admin dashboard
-
-Multiple newsletter schedules
-
-👨‍💻 Author
-
-Abhinay Makkena
+## Abhinay Makkena
 
 AI/ML Engineer | Generative AI | Agentic AI | LangGraph | RAG
 
-📄 License
+---
 
-Add the project's preferred license here before publishing the repository publicly.
+# 📄 License
+
+Add the project's preferred license before publishing the repository under an open-source license.
+
+---
+
+# ⭐ Project
+
+GitHub Repository:
+
+https://github.com/abhimakkena1937-lgtm/AinewsLetterDaily_Agent
