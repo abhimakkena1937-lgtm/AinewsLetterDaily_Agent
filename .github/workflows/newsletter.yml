@@ -2,8 +2,9 @@ name: AI Daily Newsletter
 
 on:
   schedule:
-    # 10:00 PM IST = 4:30 PM UTC
-    - cron: "30 16 * * *"
+    # 10:00 PM IST every day
+    - cron: "0 22 * * *"
+      timezone: "Asia/Kolkata"
 
   # Allows you to manually run the newsletter from GitHub
   workflow_dispatch:
